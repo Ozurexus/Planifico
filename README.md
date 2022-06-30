@@ -1,1 +1,1 @@
-# Planner
+# Planner Calendar for Front-End Web Development course
