@@ -1,9 +1,22 @@
 <script lang="ts">
 	function send() {}
+	function dateToString(date: Date): string {
+		let dateStr: string = date.toDateString();
+		let listDate: string[] = dateStr.split(' ');
+		listDate[2] = listDate[2][0] !== '0' ? listDate[2] : listDate[2].slice(1);
+		dateStr = listDate[1] + ' ' + listDate[2] + ', ' + listDate[3];
+		return dateStr;
+	}
+	let today: Date = new Date();
+	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+    let firstDayStr: string = dateToString(firstDay);
+    let lastDayStr: string = dateToString(lastDay);
 </script>
 
 <main>
-	<div class="new-event-button">
+    <p class="current-week">{firstDayStr} - {lastDayStr}</p>
+	<div class="center">
 		<button class="event-button" on:click={send}
 			><div class="button-content">
 				New event<img class="plus-image" src="plus.png" alt="plus" />
@@ -16,10 +29,17 @@
 </main>
 
 <style>
-	.new-event-button {
-		margin-top: 3%;
+	.current-week {
+        margin-top: 2%;
+		font-size: 40px;
+		color: white;
+        display: flex;
+        justify-content: center;
+	}
+	.center {
 		display: flex;
 		justify-content: center;
+
 	}
 	.event-button {
 		background-color: #6d6af7;
