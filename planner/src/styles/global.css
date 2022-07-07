@@ -1,0 +1,7 @@
+body {
+    background-image: url('https://i.yapx.ru/GuYDB.gif');
+    margin: 0;
+}
+:global(body) {
+    padding: 0;
+}
