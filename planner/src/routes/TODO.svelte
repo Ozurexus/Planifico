@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TodoItem from '$lib/TodoItem.svelte';
 	let newTodoTitle: string = '';
-	let currentFilter: string = 'all';
+	let CurrentSort: string = 'all';
 	let nextId: number = 1;
 	type todo = {
 		id: number;
@@ -28,9 +28,9 @@
 	}
 	$: ToDoListRemaining = filteredToDoList.filter((todo) => !todo.completed).length;
 	$: filteredToDoList =
-		currentFilter === 'all'
+		CurrentSort === 'all'
 			? ToDoList
-			: currentFilter === 'completed'
+			: CurrentSort === 'completed'
 			? ToDoList.filter((todo) => todo.completed)
 			: ToDoList.filter((todo) => !todo.completed);
 	//TODO
@@ -38,14 +38,15 @@
 		ToDoList.forEach((todo) => (todo.completed = event.target.checked));
 		ToDoList = ToDoList;
 	}
+
+	function handleDeleteTodo(event: CustomEvent) {
+		ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
+	}
 	function updateFilter(newFilter: string) {
-		currentFilter = newFilter;
+		CurrentSort = newFilter;
 	}
 	function clearCompleted() {
 		ToDoList = ToDoList.filter((todo) => !todo.completed);
-	}
-	function handleDeleteTodo(event: CustomEvent) {
-		ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
 	}
 	function handleToggleComplete(event: CustomEvent) {
 		const todoIndex = ToDoList.findIndex((todo) => todo.id === event.detail.id);
@@ -75,30 +76,25 @@
 
 	<div class="inner-container">
 		<div>
-			<label
+			<label class="Label"
 				><input class="inner-container-input" type="checkbox" on:change={checkAllToDoList} />Check
 				All</label
 			>
 		</div>
-		<div>{ToDoListRemaining} items left</div>
+		<div class="remaining">{ToDoListRemaining} items left</div>
 	</div>
 
 	<div class="inner-container">
 		<div>
-			<button on:click={() => updateFilter('all')} class:active={currentFilter === 'all'}
-				>All</button
-			>
-			<button on:click={() => updateFilter('active')} class:active={currentFilter === 'active'}
+			<button on:click={() => updateFilter('all')} class:active={CurrentSort === 'all'}>All</button>
+			<button on:click={() => updateFilter('active')} class:active={CurrentSort === 'active'}
 				>Active</button
 			>
-			<button
-				on:click={() => updateFilter('completed')}
-				class:active={currentFilter === 'completed'}>Completed</button
+			<button on:click={() => updateFilter('completed')} class:active={CurrentSort === 'completed'}
+				>Completed</button
 			>
 		</div>
-		<dir>
-			<button on:click={clearCompleted}>Clear Completed</button>
-		</dir>
+		<button class="Clear" on:click={clearCompleted}>Clear Completed</button>
 	</div>
 </div>
 
@@ -114,7 +110,7 @@
 		border-radius: 10px;
 		display: flex;
 		margin-left: 1px;
-		min-width: 80vw;
+		min-width: 78vw;
 		color: #787777a8;
 		padding: 1px 20px;
 		font: 'Lato';
@@ -134,20 +130,56 @@
 		margin-bottom: 13px;
 	}
 	.inner-container-input {
+		margin-top: 10px;
 		margin-right: 12px;
+		letter-spacing: 0;
+		background-color: (255, 255, 255, 1);
+		border-radius: 2px;
+		box-shadow: 0px 4px 4px #00000040;
+		height: 22px;
+		width: 22px;
+	}
+	.Label {
+		font-family: 'Lato';
+		color: rgba(255, 255, 255, 1);
+		font-size: 30px;
+		font-weight: 600;
+		font-style: normal;
+		letter-spacing: 0;
+	}
+	.remaining {
+		font-family: 'Lato';
+		color: rgba(255, 255, 255, 1);
+		font-size: 30px;
+		font-weight: 600;
+		font-style: normal;
+		letter-spacing: 0;
+	}
+	.Clear {
+		margin-right: 0px;
 	}
 	button {
-		font-size: 14px;
-		background-color: white;
-		appearance: none;
+		color: rgba(109, 106, 247, 1);
+		font-family: 'Lato';
+		font-weight: 600;
+		letter-spacing: 0;
+		font-size: 24px;
+		font-style: normal;
+		box-shadow: 0px 4px 4px #00000040;
+		margin-right: 15px;
+		border-radius: 10px;
+		padding: 2px 30px;
+		border-width: 0px;
 	}
 	button:hover {
-		background: aqua;
+		background-color: #4fd7b5;
+		color: rgba(255, 255, 255, 1);
 	}
 	button:focus {
 		outline: none;
 	}
 	.active {
-		background: aqua;
+		background: #4fd7b5;
+		color: rgba(255, 255, 255, 1);
 	}
 </style>

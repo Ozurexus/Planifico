@@ -4,14 +4,14 @@
 	export let id: number;
 	export let title: string;
 	export let completed: boolean;
-	const dispatch = createEventDispatcher();
+	const dispatcher = createEventDispatcher();
 	function toggleComplete() {
-		dispatch('toggleComplete', {
+		dispatcher('toggleComplete', {
 			id: id
 		});
 	}
 	function deleteTodo() {
-		dispatch('deleteTodo', {
+		dispatcher('deleteTodo', {
 			id: id
 		});
 	}
@@ -20,7 +20,7 @@
 <div class="todo-item" on:click={toggleComplete}>
 	<div class="todo-item-left" transition:scale={{ delay: 0, duration: 200 }}>
 		<input class="check" type="checkbox" bind:checked={completed} />
-		<div class="todo-item-label" style="lato-semi-bold-white-30px" class:completed>{title}</div>
+		<div class="todo-item-label" class:completed>{title}</div>
 	</div>
 	<div class="remove-item" on:click={deleteTodo}>
 		<img
@@ -32,7 +32,6 @@
 </div>
 
 <style>
-	@import url(https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,500,600,800);
 	.todo-item {
 		margin-bottom: 20px;
 		display: flex;
@@ -43,7 +42,6 @@
 	}
 	.remove-item {
 		cursor: pointer;
-		max-width: 0vw;
 	}
 	.cross {
 		height: 28px;
@@ -53,11 +51,8 @@
 		background-color: (255, 255, 255, 1);
 		border-radius: 2px;
 		box-shadow: 0px 4px 4px #00000040;
-		height: 22px;
-		width: 22px;
-	}
-	.remove-item:hover {
-		color: blue;
+		height: 20px;
+		width: 20px;
 	}
 	.todo-item-left {
 		display: flex;
@@ -67,11 +62,11 @@
 		margin-left: 12px;
 		min-height: 36px;
 		letter-spacing: 0;
-		font-weight: 500;
+		font-weight: 600;
 		font-style: normal;
 		color: rgba(255, 255, 255, 1);
 		font-family: 'Lato';
-		font-size: 20px;
+		font-size: 24px;
 	}
 	.completed {
 		text-decoration: line-through;
