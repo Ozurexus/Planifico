@@ -8,12 +8,6 @@
 		title: string;
 		completed: boolean;
 	};
-	type target = {
-		checked: boolean;
-	};
-	type EventType = {
-		target: target;
-	};
 	let ToDoList: todo[] = [];
 	function addTodo(event: KeyboardEvent) {
 		if (newTodoTitle === ' ') {
@@ -40,7 +34,7 @@
 			? ToDoList.filter((todo) => todo.completed)
 			: ToDoList.filter((todo) => !todo.completed);
 	//TODO
-	function checkAllToDoList(event) {
+	function checkAllToDoList(event: any) {
 		ToDoList.forEach((todo) => (todo.completed = event.target.checked));
 		ToDoList = ToDoList;
 	}
@@ -61,7 +55,6 @@
 </script>
 
 <div class="container">
-	<h1>Planifico</h1>
 	<input
 		type="text"
 		class="todo-input"
@@ -111,21 +104,32 @@
 
 <style>
 	.container {
-		max-width: 800px;
+		max-width: 80vw;
 		margin: 10px auto;
 	}
 	.todo-input {
-		width: 100%;
-		padding: 10px, 20px;
-		font-size: 18px;
-		margin-bottom: 20px;
+		align-items: flex-start;
+		align-self: flex-start;
+		border: 2px solid rgba(109, 106, 247, 1);
+		border-radius: 10px;
+		display: flex;
+		margin-left: 1px;
+		min-width: 80vw;
+		color: #787777a8;
+		padding: 1px 20px;
+		font: 'Lato';
+		font-weight: 600;
+		letter-spacing: 0;
+		min-height: 36px;
+		font-size: 30px;
+		margin-bottom: 60px;
+		margin-top: 60px;
 	}
 	.inner-container {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		font-size: 16px;
-		border-top: 1px solid lightgrey;
 		padding-top: 15px;
 		margin-bottom: 13px;
 	}
