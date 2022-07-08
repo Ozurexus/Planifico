@@ -2,7 +2,6 @@
 	import Popup from '$lib/Popup.svelte';
 
 	import EventDay from '$lib/eventDay.svelte';
-
 	$: shown = false;
 
 	$: events = ['shalom', 'hava', 'nagila'];
@@ -34,7 +33,6 @@
 	let lastDayStr: string = dateToString(lastDay);
 	import { CalendarEvent } from '$lib/event';
 	$: eventDays = [
-		{}, // Need to show correct header of table
 		{
 			date: firstDay,
 			events: [
@@ -49,6 +47,7 @@
 		}
 	];
 </script>
+
 
 <main>
 	<p class="current-week">{firstDayStr} - {lastDayStr}</p>

@@ -8,30 +8,29 @@
 
 <main>
 	<div class="table">
+		<div class="tableHeader">
+			<div>Date</div>
+			<div>Time</div>
+			<div>Event</div>
+		</div>
 		{#each eventDays as eventDay, id}
 			<div class="background-day">
-				{#if id == 0}
-					<div>Date</div>
-					<div>Time</div>
-					<div>Event</div>
-				{:else}
-					<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-						{eventDay.date.toDateString()}
-					</div>
-					{#each eventDay.events as event}
-						<div class="eventTime">{event.time}</div>
-						<div class="eventTitleAndTags">
-							<div class="eventTitle">{event.title}</div>
-							<div class="eventTags">
-								{#each event.tags as eventTag}
-									<div class="eventTag">
-										{eventTag}
-									</div>
-								{/each}
-							</div>
+				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
+					{eventDay.date.toDateString()}
+				</div>
+				{#each eventDay.events as event, id}
+					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>{event.time}</div>
+					<div class={id!=0 ? "eventTitleAndTags": "firstEventTitleAndTags"}>
+						<div class="eventTitle">{event.title}</div>
+						<div class="eventTags">
+							{#each event.tags as eventTag}
+								<div class="eventTag">
+									{eventTag}
+								</div>
+							{/each}
 						</div>
-					{/each}
-				{/if}
+					</div>
+				{/each}
 			</div>
 		{/each}
 	</div>
@@ -47,6 +46,13 @@
 		width: 80%;
 		margin-left: 10%;
 	}
+    .tableHeader{
+        background-color: white;
+		display: grid;
+		grid-template-columns: 300px 260px 1fr;
+		font-size: 25px;
+        padding: 17px;
+    }
 	.background-day {
 		background-color: white;
 		display: grid;
@@ -56,23 +62,39 @@
 		border-top: 3px solid #dfdfdf;
 	}
 	.eventsDate {
-		background-color: green;
+		background-color: white;
 		padding: 17px;
 	}
 	.eventTime {
-		background-color: red;
+		border-top: 1px solid #dfdfdf;
+		background-color: white;
+		padding: 17px;
+	}
+	.firstEventTime {
+		background-color: white;
 		padding: 17px;
 	}
 	.eventTitleAndTags {
+		border-top: 1px solid #dfdfdf;
 		display: flex;
 		justify-content: space-between;
-		background-color: blue;
+		background-color: white;
+		padding: 17px;
+	}
+    .firstEventTitleAndTags {
+		display: flex;
+		justify-content: space-between;
+		background-color: white;
 		padding: 17px;
 	}
 	.eventTags {
 		display: flex;
 		flex-wrap: wrap;
 	}
+    .eventTitle{
+        display: flex;
+        flex-wrap: wrap;
+    }
 	.eventTag {
 		margin: 5px;
 	}
