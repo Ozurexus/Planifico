@@ -1,19 +1,19 @@
 <script lang="ts">
-    import Popup from "$lib/Popup.svelte";
-    $: shown = false
+	import Popup from '$lib/Popup.svelte';
+	import EventDay from '$lib/eventDay.svelte';
+	$: shown = false;
 
-    $: events = ["shalom", "hava", "nagila"];
+	$: events = ['shalom', 'hava', 'nagila'];
 
-    
-    function showPopup(){
-        shown = true;     
-    }
-    function addNewEvent(event:any){
-        shown = false;
-        events = [...events, event.detail.eventName];
-        console.log(events);
-        console.log("new event added");
-    }
+	function showPopup() {
+		shown = true;
+	}
+	function addNewEvent(event: any) {
+		shown = false;
+		events = [...events, event.detail.eventName];
+		console.log(events);
+		console.log('new event added');
+	}
 	function dateToString(date: Date): string {
 		let dateStr: string = date.toDateString();
 		let listDate: string[] = dateStr.split(' ');
@@ -24,13 +24,26 @@
 	let today: Date = new Date();
 	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
 	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-    let firstDayStr: string = dateToString(firstDay);
-    let lastDayStr: string = dateToString(lastDay);
+	let firstDayStr: string = dateToString(firstDay);
+	let lastDayStr: string = dateToString(lastDay);
+	import { CalendarEvent } from '$lib/event';
+	$: eventDays = [
+		{
+			date: firstDay,
+			events: [
+				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['#work']),
+				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['#work'])
+			]
+		},
+		{
+			date: lastDay,
+			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['#chill', '#beer'])]
+		}
+	];
 </script>
 
 <main>
-    
-    <p class="current-week">{firstDayStr} - {lastDayStr}</p>
+	<p class="current-week">{firstDayStr} - {lastDayStr}</p>
 	<div class="center">
 		<button class="event-button" on:click={showPopup}
 			><div class="button-content">
@@ -38,29 +51,28 @@
 			</div></button
 		>
 	</div>
-    {#if shown}
-        <Popup on:send={addNewEvent} />
-    {/if}
-    <div class="container">
-        <p>Date Time Event</p>
-        {#each events as event}
-            <p>{event}</p>
-        {/each}
-    </div>
+	{#if shown}
+		<Popup on:send={addNewEvent} />
+	{/if}
+	<div class="container">
+		<p>Date Time Event</p>
+		{#each eventDays as eventDay}
+		<EventDay {eventDay}/>
+		{/each}
+	</div>
 </main>
 
 <style>
 	.current-week {
-        margin-top: 2%;
+		margin-top: 2%;
 		font-size: 40px;
 		color: white;
-        display: flex;
-        justify-content: center;
+		display: flex;
+		justify-content: center;
 	}
 	.center {
 		display: flex;
 		justify-content: center;
-
 	}
 	.event-button {
 		background-color: #6d6af7;
