@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-    import Taglist from '$lib/Taglist.svelte'
-	let eventName: string = 'bruh you didnt enter anything';
+	import Taglist from '$lib/Taglist.svelte';
+	let eventName: string = '';
 	const dispatch = createEventDispatcher();
 	function send() {
 		console.log('send');
@@ -14,26 +14,41 @@
 </script>
 
 <main>
-	<div class="topbar">
-		<h2>Add new event</h2>
-		<input
-			on:click={close}
-			class="close"
-			type="image"
-			name="close_button"
-			src="close.png"
-			alt="close button"
-		/>
+	<div class="popupbg">
+		<div class="topbar">
+			<h2>Add new event</h2>
+			<input
+				on:click={close}
+                class="button"
+				id="close"
+				type="image"
+				name="close_button"
+				src="close.png"
+				alt="close button"
+			/>
+		</div>
+		<input id="input-name" type="text" placeholder="Type event name" bind:value={eventName} />
+		<p>Choose a date</p>
+		<p>Select a tag</p>
+		<Taglist />
+		<button class="button" id="send" on:click={send}>Add</button>
 	</div>
-	<input id="input-name" type="text" bind:value={eventName} />
-	<p>Choose a date</p>
-	<p>Select a tag</p>
-    <Taglist/>
-	<button class="send" on:click={send}>Add</button>
 </main>
 
 <style>
 	main {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+	}
+	.popupbg {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		background-color: white;
 		border-radius: 32px;
 		width: 50%;
@@ -55,7 +70,11 @@
 	h2 {
 		color: rgb(109, 106, 247);
 	}
-	.close {
+    .button{
+        cursor: pointer;
+		border-style: none;
+    }
+	#close {
 		width: 28px;
 		position: absolute;
 		top: 15px;
@@ -70,10 +89,9 @@
 		border-style: none;
 		background-color: rgba(246, 246, 246, 1);
 		border-radius: 6px;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	}
-	.send {
-		border-style: none;
+	#send {
 		width: 20%;
 		height: 30px;
 		margin: 10px;

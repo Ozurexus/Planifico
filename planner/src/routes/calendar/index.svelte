@@ -30,6 +30,7 @@
 	let lastDayStr: string = dateToString(lastDay);
 </script>
 
+
 <main>
 	<p class="current-week">{firstDayStr} - {lastDayStr}</p>
 	<div class="center">
