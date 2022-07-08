@@ -34,16 +34,18 @@
 	let lastDayStr: string = dateToString(lastDay);
 	import { CalendarEvent } from '$lib/event';
 	$: eventDays = [
+		{}, // Need to show correct header of table
 		{
 			date: firstDay,
 			events: [
 				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['#work']),
-				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['#work'])
+				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['#work']),
+				new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['#work', '#important'])
 			]
 		},
 		{
 			date: lastDay,
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['#chill', '#beer'])]
+			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['#chill', '#beer', '#vodka','#popcorn', '#subtitles'])]
 		}
 	];
 </script>
@@ -63,10 +65,7 @@
 		{/if}
 	</div>
 	<div class="container">
-		<p>Date Time Event</p>
-		{#each eventDays as eventDay}
-		<EventDay {eventDay}/>
-		{/each}
+			<EventDay {eventDays}/>
 	</div>
 </main>
 
@@ -89,6 +88,7 @@
 		padding: 5px;
 		font-size: 18px;
 		border-radius: 5px;
+		margin-bottom: 15px;
 	}
 	.plus-image {
 		height: 22px;
