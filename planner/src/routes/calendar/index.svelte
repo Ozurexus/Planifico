@@ -1,12 +1,18 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
+
 	import EventDay from '$lib/eventDay.svelte';
+
 	$: shown = false;
 
 	$: events = ['shalom', 'hava', 'nagila'];
 
 	function showPopup() {
 		shown = true;
+	}
+
+	function close() {
+		shown = false;
 	}
 	function addNewEvent(event: any) {
 		shown = false;
@@ -51,9 +57,11 @@
 			</div></button
 		>
 	</div>
-	{#if shown}
-		<Popup on:send={addNewEvent} />
-	{/if}
+	<div class="center">
+		{#if shown}
+			<Popup on:send={addNewEvent} on:close={close} />
+		{/if}
+	</div>
 	<div class="container">
 		<p>Date Time Event</p>
 		{#each eventDays as eventDay}
@@ -76,7 +84,6 @@
 	}
 	.event-button {
 		background-color: #6d6af7;
-		display: inline;
 		color: white;
 		border: hidden;
 		padding: 5px;
