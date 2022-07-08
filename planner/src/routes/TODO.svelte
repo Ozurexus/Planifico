@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TodoItem from '../components/TodoItem.svelte';
+	import TodoItem from '$lib/TodoItem.svelte';
 	let newTodoTitle: string = '';
 	let currentFilter: string = 'all';
 	let nextId: number = 1;
