@@ -1,6 +1,6 @@
 <script lang='ts'>
     import type { Client } from "@microsoft/microsoft-graph-client";
-    import ButtonSignOut from "../components/ButtonSignOut.svelte";
+    import ButtonSignOut from "../lib/ButtonSignOut.svelte";
     import {isAuth} from "../lib/middleware"
     import {getCurrentCalendar, getCurrentWeekStart, getCurrentWeekEnd} from "../lib/out";
 

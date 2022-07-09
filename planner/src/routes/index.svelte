@@ -1,5 +1,5 @@
 <script>
-    import ButtonSignIn from "../components/ButtonSignIn.svelte"
+    import ButtonSignIn from "../lib/ButtonSignIn.svelte"
     import {isAuth} from "../lib/middleware"
 
     // это проверка, что юзер зашел!!!

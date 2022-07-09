@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { config as conf} from "../lib/config";
-    import { getUser} from "../lib/graph";
+    import { config as conf} from "./config";
+    import { getUser} from "./graph";
     import {PublicClientApplication} from "@azure/msal-browser";
     import {InteractionType} from "@azure/msal-browser";
     import type { User, Event } from 'microsoft-graph';

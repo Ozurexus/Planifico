@@ -9,7 +9,7 @@
         }
     })
 
-	import Popup from '../components/Popup.svelte';
+	import Popup from '../lib/Popup.svelte';
 	$: shown = false;
 
 	$: events = ['shalom', 'hava', 'nagila'];
