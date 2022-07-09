@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { CalendarEvent } from '$lib/event';
+	import TableDateElement from '$lib/TableDateElement.svelte';
+
 	export let eventDays: {
 		date: Date;
 		events: CalendarEvent[];
@@ -16,7 +18,7 @@
 		{#each eventDays as eventDay, id}
 			<div class="background-day">
 				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-					<div>{eventDay.date.toDateString()}</div>
+					<TableDateElement date={eventDay.date} />
 				</div>
 				{#each eventDay.events as event, id}
 					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>{event.time}</div>
@@ -37,6 +39,8 @@
 </main>
 
 <style>
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
+
 	.table {
 		display: grid;
 		/* gap: 10px; */
@@ -44,20 +48,24 @@
 		padding: 12px;
 		border-radius: 28px;
 		width: 80%;
+		margin-top: 2%;
 		margin-left: 10%;
+		font-family: Lato;
+		font-weight: 550;
+		color: rgba(96, 49, 98, 1);
 	}
 	.tableHeader {
 		background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
-		font-size: 25px;
+		font-size: 23px;
 		padding: 17px;
 	}
 	.background-day {
 		background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
-		font-size: 25px;
+		font-size: 23px;
 		/* gap:10px; */
 		border-top: 3px solid #dfdfdf;
 	}
@@ -68,24 +76,27 @@
 	.eventTime {
 		border-top: 1px solid #dfdfdf;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
+		display: flex;
+		align-self: center;
 	}
 	.firstEventTime {
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
+		align-self: center;
 	}
 	.eventTitleAndTags {
 		border-top: 1px solid #dfdfdf;
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
 	}
 	.firstEventTitleAndTags {
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
 	}
 	.eventTags {
 		display: flex;
@@ -94,8 +105,15 @@
 	.eventTitle {
 		display: flex;
 		flex-wrap: wrap;
+		align-self: center;
 	}
 	.eventTag {
+		align-self: center;
 		margin: 5px;
+		border: 2px solid;
+		border-radius: 25px;
+		padding: 3px;
+		padding-left: 9px;
+		padding-right: 9px;
 	}
 </style>

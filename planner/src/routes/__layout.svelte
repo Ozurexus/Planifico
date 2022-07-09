@@ -27,11 +27,16 @@
 </main>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.topnav {
 		background-color: #6d6af7;
 		overflow: hidden;
 		display: flex;
 		justify-content: center;
+		font-family: Lato;
+		font-weight: 600;
 	}
 
 	/* Style the links inside the navigation bar */
@@ -41,10 +46,11 @@
 		text-align: center;
 		padding: 14px 16px;
 		text-decoration: none;
-		font-size: 17px;
+		font-size: 20px;
+		margin-right: 20px;
 	}
 	.topnav a:hover{
-		color:rgb(227, 227, 22);
+		color:pink;
 	}
 
 	/* Change the color of links on hover */
