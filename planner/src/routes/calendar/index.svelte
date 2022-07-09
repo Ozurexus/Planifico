@@ -1,14 +1,65 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
 	import EventDay from '$lib/eventDay.svelte';
-
+	import { CalendarEvent } from '$lib/event';
+	
 	$: shown = false;
-	$: events = ['shalom', 'hava', 'nagila'];
+	let today: Date = new Date();
+	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+	let firstDayStr: string = dateToString(firstDay);
+	let lastDayStr: string = dateToString(lastDay);
+	$: eventDays = [
+		{
+			date: new Date('2022-7-1'),
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
+					'chill',
+					'beer',
+					'chips',
+					'Pypcorn',
+					'subtitles'
+				])
+			]
+		},
+		{
+			date: new Date('3 Jul 2022'),
+			events: [
+				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['work']),
+				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['work']),
+				new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['work', 'important'])
+			]
+		},
+		{
+			date: new Date('2022-10-16'),
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
+					'chill',
+					'beer',
+					'chips',
+					'popcorn',
+					'subtitles'
+				])
+			]
+		}
+	];
 
-	function addNewEvent(event: any) {
+	function addNewEvent(event: CustomEvent) {
 		shown = false;
-		events = [...events, event.detail.eventName];
-		console.log(events);
+		let date:Date = new Date(event.detail.date);
+		let calendarEvent: CalendarEvent = event.detail.calendarEvent;
+		let was:boolean = false;
+		eventDays.forEach((obj) => {
+			console.log(obj.date.getTime(), date.getTime())
+			if(obj.date.getTime() === date.getTime()){
+				obj.events = [...obj.events, calendarEvent];
+				was = true;
+			}
+		})
+		if(!was)
+			eventDays = [...eventDays, {date:date, events:[calendarEvent]}];
+
+		console.log(eventDays);
 		console.log('new event added');
 	}
 	function dateToString(date: Date): string {
@@ -18,30 +69,8 @@
 		dateStr = listDate[1] + ' ' + listDate[2] + ', ' + listDate[3];
 		return dateStr;
 	}
-	let today: Date = new Date();
-	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
-	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-	let firstDayStr: string = dateToString(firstDay);
-	let lastDayStr: string = dateToString(lastDay);
-	import { CalendarEvent } from '$lib/event';
-	$: eventDays = [
-		{
-			date: new Date("2022-7-1"),
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['chill', 'beer', 'chips','Pypcorn', 'subtitles'])]
-		},
-		{
-			date: firstDay,
-			events: [
-				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['work']),
-				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['work']),
-				new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['work', 'important'])
-			]
-		},
-		{
-			date: new Date("2022-10-16"),
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['chill', 'beer', 'chips','popcorn', 'subtitles'])]
-		}
-	];
+	
+	
 </script>
 
 <main>

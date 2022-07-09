@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let date: Date;
+    // console.log(date.toDateString());
     let dateStr: string[] = date.toDateString().split(" ");
     let dayOfWeek: string = dateStr[0];
     let month: string = dateStr[1];

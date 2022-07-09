@@ -4,17 +4,23 @@
 	import DatePicker from '$lib/DatePicker.svelte';
 	import { CalendarEvent } from '$lib/event';
 
+	let date:Date;
 	let calendarEvent: CalendarEvent = new CalendarEvent("","",[""]);
-	function addDate(myDate: any) {
-		let date:string[] = myDate.detail.myDate.split(" ");
-
-		// calendarEvent.time = ;
+	function addDateAndTime(event: any) {
+		date = new Date(event.detail.date);
+		calendarEvent.time=event.detail.timeStart+' - '+event.detail.timeEnd;
+		console.log(calendarEvent, date);
+		console.log("date and time added");
+	}
+	function changeTags(event:any){
+		calendarEvent.tags = event.detail.tags;
+		console.log("tags changed");
 	}
 
 	const dispatch = createEventDispatcher();
 	function send() {
 		console.log('send');
-		dispatch('send', { calendarEvent });
+		dispatch('send', { date, calendarEvent });
 	}
 	function close() {
 		console.log('close');
@@ -42,10 +48,9 @@
 			placeholder="Type event name"
 			bind:value={calendarEvent.title}
 		/>
-		<p>Choose a date</p>
-		<DatePicker on:sendDate={addDate} />
+		<DatePicker on:sendDate={addDateAndTime} />
 		<p>Select a tag</p>
-		<Taglist />
+		<Taglist on:change={changeTags}/>
 		<button class="button" id="send" on:click={send}>Add</button>
 	</div>
 </main>
