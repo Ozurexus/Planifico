@@ -32,6 +32,9 @@
 </div>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.todo-item {
 		margin-bottom: 20px;
 		display: flex;
@@ -39,9 +42,12 @@
 		justify-content: space-between;
 		animation-duration: 0.25s;
 		min-height: 36px;
+		font-family: Lato;
+		font-weight: 500;
 	}
 	.remove-item {
 		cursor: pointer;
+		margin-right: 10px;
 	}
 	.cross {
 		height: 28px;
@@ -49,7 +55,7 @@
 	}
 	.check {
 		background-color: (255, 255, 255, 1);
-		border-radius: 2px;
+		border-radius: 10px;
 		box-shadow: 0px 4px 4px #00000040;
 		height: 20px;
 		width: 20px;
@@ -62,11 +68,12 @@
 		margin-left: 12px;
 		min-height: 36px;
 		letter-spacing: 0;
-		font-weight: 600;
+		font-weight: 500;
 		font-style: normal;
 		color: rgba(255, 255, 255, 1);
 		font-family: 'Lato';
 		font-size: 24px;
+
 	}
 	.completed {
 		text-decoration: line-through;

@@ -64,15 +64,17 @@
 		on:keydown={addTodo}
 	/>
 
-	{#each filteredToDoList as todo}
-		<div class="ToDoItem">
-			<TodoItem
-				{...todo}
-				on:deleteTodo={handleDeleteTodo}
-				on:toggleComplete={handleToggleComplete}
-			/>
-		</div>
-	{/each}
+	<div class="items-block">
+		{#each filteredToDoList as todo}
+			<div class="ToDoItem">
+				<TodoItem
+					{...todo}
+					on:deleteTodo={handleDeleteTodo}
+					on:toggleComplete={handleToggleComplete}
+				/>
+			</div>	
+		{/each}
+	</div>	
 
 	<div class="inner-container">
 		<div>
@@ -99,6 +101,9 @@
 </div>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.container {
 		max-width: 80vw;
 		margin: 10px auto;
@@ -109,18 +114,54 @@
 		border: 2px solid rgba(109, 106, 247, 1);
 		border-radius: 10px;
 		display: flex;
+		outline: none;
 		margin-left: 1px;
 		min-width: 78vw;
-		color: #787777a8;
+		color: rgba(96, 49, 98, 1);
 		padding: 1px 20px;
 		font: 'Lato';
 		font-weight: 600;
 		letter-spacing: 0;
 		min-height: 36px;
-		font-size: 30px;
+		font-size: 27px;
 		margin-bottom: 60px;
 		margin-top: 60px;
 	}
+
+	::placeholder {
+		color:    rgb(145, 143, 143);
+		font-family: Lato;
+		font-weight: 600;
+	}	
+
+	.items-block{
+		width:103%;
+		height:300px;
+	
+		overflow: auto; /* свойство для прокрутки по горизонтали. Автоматом, если больше блока */
+		overflow-x: hidden;
+	}
+
+	::-webkit-scrollbar {
+		width: 10px;
+		background-color: none;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color:rgba(109, 106, 247, 1);
+	}
+
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+		border-radius: 10px;
+		background-color: #ffffff;
+	}
+
+	.ToDoItem {
+		word-break:break-all;
+	}
+
 	.inner-container {
 		display: flex;
 		align-items: center;
@@ -143,14 +184,15 @@
 		font-family: 'Lato';
 		color: rgba(255, 255, 255, 1);
 		font-size: 30px;
-		font-weight: 600;
+		font-weight: 800;
 		font-style: normal;
 		letter-spacing: 0;
+		font-size: 27px;
 	}
 	.remaining {
 		font-family: 'Lato';
 		color: rgba(255, 255, 255, 1);
-		font-size: 30px;
+		font-size: 27px;
 		font-weight: 600;
 		font-style: normal;
 		letter-spacing: 0;
