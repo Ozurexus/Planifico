@@ -56,14 +56,14 @@
 	.tableHeader {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 15% 20% 65%;
+		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
 		font-size: 40px;
 		padding-bottom: 20px;
 	}
 	.background-day {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 15% 20% 65%;
+		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
 		font-size: 23px;
 
 		border-top: 3px solid #dfdfdf;
