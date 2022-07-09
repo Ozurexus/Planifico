@@ -4,27 +4,28 @@
 	import DatePicker from '$lib/DatePicker.svelte';
 	import { CalendarEvent } from '$lib/event';
 
-	let date:Date;
-	let calendarEvent: CalendarEvent = new CalendarEvent("","",[""]);
+	let date: Date;
+	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', ['']);
 	function addDateAndTime(event: any) {
 		date = new Date(event.detail.date);
-		calendarEvent.time=event.detail.timeStart+' - '+event.detail.timeEnd;
-		console.log(calendarEvent, date);
-		console.log("date and time added");
+		calendarEvent.timeStart = event.detail.timeStart;
+		calendarEvent.timeEnd = event.detail.timeEnd;
+		// console.log(calendarEvent, date);
+		console.log('date and time added');
 	}
-	function changeTags(event:any){
+	function changeTags(event: any) {
 		calendarEvent.tags = event.detail.tags;
-		console.log("tags changed");
+		console.log('tags changed');
 	}
 
 	const dispatch = createEventDispatcher();
 	function send() {
-		console.log('send');
 		dispatch('send', { date, calendarEvent });
+		console.log('send');
 	}
 	function close() {
-		console.log('close');
 		dispatch('close', {});
+		console.log('close');
 	}
 </script>
 
@@ -50,8 +51,13 @@
 		/>
 		<DatePicker on:sendDate={addDateAndTime} />
 		<p>Select a tag</p>
-		<Taglist on:change={changeTags}/>
-		<button class="button" id="send" on:click={send}>Add</button>
+		<Taglist on:change={changeTags} />
+		<button
+			class="button"
+			id="send"
+			disabled={!date || !calendarEvent.timeStart || !calendarEvent.timeEnd || !calendarEvent.title}
+			on:click={send}>Add</button
+		>
 	</div>
 </main>
 
@@ -94,6 +100,12 @@
 		cursor: pointer;
 		border-style: none;
 	}
+	#send:hover:enabled {
+		background-color: #605edc;
+	}
+	#close:hover {
+		background-color: rgb(230, 230, 230);
+	}
 	#close {
 		width: 28px;
 		position: absolute;
@@ -119,5 +131,9 @@
 		border-radius: 6px;
 		color: white;
 		font-size: 20px;
+	}
+	#send:disabled {
+		cursor: auto;
+		background-color: rgb(215, 215, 215);
 	}
 </style>

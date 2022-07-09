@@ -2,9 +2,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import SveltyPicker from 'svelty-picker';
 
-	let date: string = '12 Jul 2022';
-	let timeStart:string = "04:20";
-	let timeEnd:string = "13:37";
+	let date: string = '';
+	let timeStart:string = "";
+	let timeEnd:string = "";
 	
 	const dispatch = createEventDispatcher();
 	function sendDate() {

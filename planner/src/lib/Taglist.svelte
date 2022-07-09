@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	let tags: string[] = ['gym', 'work', 'chill'];
+	let tags: string[] = [];
 	let shown: boolean = false;
 	let tagName: string = '';
 
@@ -87,6 +87,9 @@
         height: 15px;
         width: 15px;
     }
+	#add-tag-btn:hover{
+		background-color:rgb(230,230,230);
+	}
     #add-tag-btn{
         height: 25px;
         border-style: none;
