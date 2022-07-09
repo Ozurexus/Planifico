@@ -117,16 +117,19 @@
 		font-weight: 600;
 		border: hidden;
 		padding: 5px;
-		font-size: 18px;
+		font-size: 25px;
 		border-radius: 6px;
 		padding-left: 13px;
 		padding-right: 10px;
 		margin-top: 7px;
 		margin-bottom: 10px;
 	}
+	.event-button:hover{
+		background-color: #605edc;
+	}
 	.plus-image {
-		height: 22px;
-		width: 22px;
+		height: 25px;
+		width: 25px;
 		margin-left: 5px;
 	}
 	.button-content {
