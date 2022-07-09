@@ -16,11 +16,11 @@
 		{#each eventDays as eventDay, id}
 			<div class="background-day">
 				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-					{eventDay.date.toDateString()}
+					<div>{eventDay.date.toDateString()}</div>
 				</div>
 				{#each eventDay.events as event, id}
 					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>{event.time}</div>
-					<div class={id!=0 ? "eventTitleAndTags": "firstEventTitleAndTags"}>
+					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
 						<div class="eventTitle">{event.title}</div>
 						<div class="eventTags">
 							{#each event.tags as eventTag}
@@ -46,13 +46,13 @@
 		width: 80%;
 		margin-left: 10%;
 	}
-    .tableHeader{
-        background-color: white;
+	.tableHeader {
+		background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
 		font-size: 25px;
-        padding: 17px;
-    }
+		padding: 17px;
+	}
 	.background-day {
 		background-color: white;
 		display: grid;
@@ -81,7 +81,7 @@
 		background-color: white;
 		padding: 17px;
 	}
-    .firstEventTitleAndTags {
+	.firstEventTitleAndTags {
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
@@ -91,10 +91,10 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-    .eventTitle{
-        display: flex;
-        flex-wrap: wrap;
-    }
+	.eventTitle {
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.eventTag {
 		margin: 5px;
 	}
