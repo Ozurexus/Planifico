@@ -37,6 +37,9 @@
 </main>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.table {
 		display: grid;
 		/* gap: 10px; */
@@ -44,20 +47,25 @@
 		padding: 12px;
 		border-radius: 28px;
 		width: 80%;
+		margin-top: 2%;
 		margin-left: 10%;
+		font-family: Lato;
+		font-weight: 550;
+		color: rgba(96, 49, 98, 1)
+
 	}
     .tableHeader{
         background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
-		font-size: 25px;
+		font-size: 23px;
         padding: 17px;
     }
 	.background-day {
 		background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
-		font-size: 25px;
+		font-size: 23px;
 		/* gap:10px; */
 		border-top: 3px solid #dfdfdf;
 	}
@@ -79,7 +87,7 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
 	}
     .firstEventTitleAndTags {
 		display: flex;

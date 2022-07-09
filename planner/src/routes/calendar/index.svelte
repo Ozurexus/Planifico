@@ -69,10 +69,16 @@
 </main>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.current-week {
 		margin-top: 2%;
-		font-size: 40px;
+		margin-bottom: 1%;
+		font-size: 35px;
 		color: white;
+		font-family: Lato;
+		font-weight: 600;
 		display: flex;
 		justify-content: center;
 	}
@@ -81,13 +87,19 @@
 		justify-content: center;
 	}
 	.event-button {
+		box-shadow: 0 4px 4px #00000040;
 		background-color: #6d6af7;
+		margin-bottom: 10%;
 		color: white;
+		font-weight: 600;
 		border: hidden;
 		padding: 5px;
 		font-size: 18px;
-		border-radius: 5px;
-		margin-bottom: 15px;
+		border-radius: 6px;
+		padding-left: 13px;
+		padding-right: 10px;
+		margin-top: 7px;
+		margin-bottom: 10px;
 	}
 	.plus-image {
 		height: 22px;
@@ -98,5 +110,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		font-family: Lato;
+		font-weight: 600;
 	}
 </style>
