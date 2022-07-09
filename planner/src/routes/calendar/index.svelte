@@ -1,22 +1,66 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
-
 	import EventDay from '$lib/eventDay.svelte';
+	import { CalendarEvent } from '$lib/event';
+	
 	$: shown = false;
+	let today: Date = new Date();
+	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+	let firstDayStr: string = dateToString(firstDay);
+	let lastDayStr: string = dateToString(lastDay);
+	$: eventDays = [
+		// {
+		// 	date: new Date('2022-7-1'),
+		// 	events: [
+		// 		new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
+		// 			'chill',
+		// 			'beer',
+		// 			'chips',
+		// 			'Pypcorn',
+		// 			'subtitles'
+		// 		])
+		// 	]
+		// },
+		// {
+		// 	date: new Date('3 Jul 2022'),
+		// 	events: [
+		// 		new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['work']),
+		// 		new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['work']),
+		// 		new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['work', 'important'])
+		// 	]
+		// },
+		// {
+		// 	date: new Date('2022-10-16'),
+		// 	events: [
+		// 		new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
+		// 			'chill',
+		// 			'beer',
+		// 			'chips',
+		// 			'popcorn',
+		// 			'subtitles'
+		// 		])
+		// 	]
+		// }
+	];
 
-	$: events = ['shalom', 'hava', 'nagila'];
-
-	function showPopup() {
-		shown = true;
-	}
-
-	function close() {
+	function addNewEvent(event: CustomEvent) {
 		shown = false;
-	}
-	function addNewEvent(event: any) {
-		shown = false;
-		events = [...events, event.detail.eventName];
-		console.log(events);
+		let date:Date = new Date(event.detail.date);
+		let calendarEvent: CalendarEvent = event.detail.calendarEvent;
+		let was:boolean = false;
+		eventDays.forEach((obj) => {
+			console.log(obj.date.getTime(), date.getTime())
+			if(obj.date.getTime() === date.getTime()){
+				obj.events = [...obj.events, calendarEvent];
+				was = true;
+			}
+		})
+		if(!was)
+			eventDays = [...eventDays, {date:date, events:[calendarEvent]}];
+
+		eventDays=eventDays;
+		console.log(eventDays);
 		console.log('new event added');
 	}
 	function dateToString(date: Date): string {
@@ -26,37 +70,14 @@
 		dateStr = listDate[1] + ' ' + listDate[2] + ', ' + listDate[3];
 		return dateStr;
 	}
-	let today: Date = new Date();
-	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
-	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-	let firstDayStr: string = dateToString(firstDay);
-	let lastDayStr: string = dateToString(lastDay);
-	import { CalendarEvent } from '$lib/event';
-	$: eventDays = [
-		{
-			date: new Date("2022-7-1"),
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['chill', 'beer', 'chips','Pypcorn', 'subtitles'])]
-		},
-		{
-			date: firstDay,
-			events: [
-				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['work']),
-				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['work']),
-				new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['work', 'important'])
-			]
-		},
-		{
-			date: new Date("2022-10-16"),
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['chill', 'beer', 'chips','popcorn', 'subtitles'])]
-		}
-	];
+	
+	
 </script>
-
 
 <main>
 	<p class="current-week">{firstDayStr} - {lastDayStr}</p>
 	<div class="center">
-		<button class="event-button" on:click={showPopup}
+		<button class="event-button" on:click={() => (shown = true)}
 			><div class="button-content">
 				New event<img class="plus-image" src="plus.png" alt="plus" />
 			</div></button
@@ -64,17 +85,16 @@
 	</div>
 	<div class="center">
 		{#if shown}
-			<Popup on:send={addNewEvent} on:close={close} />
+			<Popup on:send={addNewEvent} on:close={() => (shown = false)} />
 		{/if}
 	</div>
 	<div class="container">
-			<EventDay {eventDays}/>
+		<EventDay {eventDays} />
 	</div>
 </main>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
 	.current-week {
 		margin-top: 2%;

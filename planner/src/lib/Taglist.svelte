@@ -1,19 +1,22 @@
 <script lang="ts">
-	let tags: string[] = ['gym', 'work', 'chill'];
+	import { createEventDispatcher } from 'svelte';
+
+	let tags: string[] = [];
 	let shown: boolean = false;
 	let tagName: string = '';
-	function changeShown() {
-		shown = !shown;
-	}
+
+	let dispatch = createEventDispatcher();
 	function addTag(event: KeyboardEvent) {
 		if (event.key === 'Enter' && tagName != '') {
 			tags = [...tags, tagName];
 			tagName = '';
 		}
+		dispatch('change', {tags});
 	}
     function removeTag(id:number){
         tags.splice(id, 1);
         tags = tags;
+		dispatch('change', {tags});
     }
 </script>
 
@@ -30,11 +33,10 @@
 					name="close_button"
 					src="close_tag.png"
 					alt="close button"
-
 				/>
 			</div>
 		{/each}
-		<button id="add-tag-btn" class="button" on:click={changeShown}> New tag + </button>
+		<button id="add-tag-btn" class="button" on:click={()=> shown=!shown}> New tag + </button>
 	</div>
 	{#if shown}
 		<input
@@ -85,6 +87,9 @@
         height: 15px;
         width: 15px;
     }
+	#add-tag-btn:hover{
+		background-color:rgb(230,230,230);
+	}
     #add-tag-btn{
         height: 25px;
         border-style: none;

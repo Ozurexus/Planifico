@@ -21,7 +21,9 @@
 					<TableDateElement date={eventDay.date} />
 				</div>
 				{#each eventDay.events as event, id}
-					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}><div class="eventTimeContent">{event.time}</div></div>
+					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>
+						<div class="eventTimeContent">{event.timeStart} - {event.timeEnd}</div>
+					</div>
 					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
 						<div class="eventTitle">{event.title}</div>
 						<div class="eventTags">
@@ -79,7 +81,7 @@
 		padding: 20px 0px;
 		font-size: 28px;
 	}
-	.eventTimeContent{
+	.eventTimeContent {
 		align-self: center;
 	}
 	.firstEventTime {
@@ -87,7 +89,6 @@
 		display: flex;
 		padding: 20px 0px;
 		font-size: 28px;
-		
 	}
 	.eventTitleAndTags {
 		border-top: 1px solid #dfdfdf;

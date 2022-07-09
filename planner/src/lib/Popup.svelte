@@ -1,15 +1,31 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import Taglist from '$lib/Taglist.svelte';
-	let eventName: string = '';
+	import DatePicker from '$lib/DatePicker.svelte';
+	import { CalendarEvent } from '$lib/event';
+
+	let date: Date;
+	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', ['']);
+	function addDateAndTime(event: any) {
+		date = new Date(event.detail.date);
+		calendarEvent.timeStart = event.detail.timeStart;
+		calendarEvent.timeEnd = event.detail.timeEnd;
+		// console.log(calendarEvent, date);
+		console.log('date and time added');
+	}
+	function changeTags(event: any) {
+		calendarEvent.tags = event.detail.tags;
+		console.log('tags changed');
+	}
+
 	const dispatch = createEventDispatcher();
 	function send() {
+		dispatch('send', { date, calendarEvent });
 		console.log('send');
-		dispatch('send', { eventName });
 	}
 	function close() {
-		console.log('close');
 		dispatch('close', {});
+		console.log('close');
 	}
 </script>
 
@@ -19,7 +35,7 @@
 			<h2>Add new event</h2>
 			<input
 				on:click={close}
-                class="button"
+				class="button"
 				id="close"
 				type="image"
 				name="close_button"
@@ -27,11 +43,21 @@
 				alt="close button"
 			/>
 		</div>
-		<input id="input-name" type="text" placeholder="Type event name" bind:value={eventName} />
-		<p>Choose a date</p>
+		<input
+			id="input-name"
+			type="text"
+			placeholder="Type event name"
+			bind:value={calendarEvent.title}
+		/>
+		<DatePicker on:sendDate={addDateAndTime} />
 		<p>Select a tag</p>
-		<Taglist />
-		<button class="button" id="send" on:click={send}>Add</button>
+		<Taglist on:change={changeTags} />
+		<button
+			class="button"
+			id="send"
+			disabled={!date || !calendarEvent.timeStart || !calendarEvent.timeEnd || !calendarEvent.title}
+			on:click={send}>Add</button
+		>
 	</div>
 </main>
 
@@ -70,10 +96,16 @@
 	h2 {
 		color: rgb(109, 106, 247);
 	}
-    .button{
-        cursor: pointer;
+	.button {
+		cursor: pointer;
 		border-style: none;
-    }
+	}
+	#send:hover:enabled {
+		background-color: #605edc;
+	}
+	#close:hover {
+		background-color: rgb(230, 230, 230);
+	}
 	#close {
 		width: 28px;
 		position: absolute;
@@ -99,5 +131,9 @@
 		border-radius: 6px;
 		color: white;
 		font-size: 20px;
+	}
+	#send:disabled {
+		cursor: auto;
+		background-color: rgb(215, 215, 215);
 	}
 </style>
