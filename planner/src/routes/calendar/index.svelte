@@ -1,19 +1,24 @@
 <script lang="ts">
-    import Popup from "$lib/Popup.svelte";
-    $: shown = false
+	import Popup from '$lib/Popup.svelte';
 
-    $: events = ["shalom", "hava", "nagila"];
+	import EventDay from '$lib/eventDay.svelte';
+	$: shown = false;
 
-    
-    function showPopup(){
-        shown = true;     
-    }
-    function addNewEvent(event:any){
-        shown = false;
-        events = [...events, event.detail.eventName];
-        console.log(events);
-        console.log("new event added");
-    }
+	$: events = ['shalom', 'hava', 'nagila'];
+
+	function showPopup() {
+		shown = true;
+	}
+
+	function close() {
+		shown = false;
+	}
+	function addNewEvent(event: any) {
+		shown = false;
+		events = [...events, event.detail.eventName];
+		console.log(events);
+		console.log('new event added');
+	}
 	function dateToString(date: Date): string {
 		let dateStr: string = date.toDateString();
 		let listDate: string[] = dateStr.split(' ');
@@ -24,13 +29,28 @@
 	let today: Date = new Date();
 	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
 	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-    let firstDayStr: string = dateToString(firstDay);
-    let lastDayStr: string = dateToString(lastDay);
+	let firstDayStr: string = dateToString(firstDay);
+	let lastDayStr: string = dateToString(lastDay);
+	import { CalendarEvent } from '$lib/event';
+	$: eventDays = [
+		{
+			date: firstDay,
+			events: [
+				new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['#work']),
+				new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['#work']),
+				new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['#work', '#important'])
+			]
+		},
+		{
+			date: lastDay,
+			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['#chill', '#beer', '#vodka','#popcorn', '#subtitles'])]
+		}
+	];
 </script>
 
+
 <main>
-    
-    <p class="current-week">{firstDayStr} - {lastDayStr}</p>
+	<p class="current-week">{firstDayStr} - {lastDayStr}</p>
 	<div class="center">
 		<button class="event-button" on:click={showPopup}
 			><div class="button-content">
@@ -38,38 +58,48 @@
 			</div></button
 		>
 	</div>
-    {#if shown}
-        <Popup on:send={addNewEvent} />
-    {/if}
-    <div class="container">
-        <p>Date Time Event</p>
-        {#each events as event}
-            <p>{event}</p>
-        {/each}
-    </div>
+	<div class="center">
+		{#if shown}
+			<Popup on:send={addNewEvent} on:close={close} />
+		{/if}
+	</div>
+	<div class="container">
+			<EventDay {eventDays}/>
+	</div>
 </main>
 
 <style>
+	@import
+	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
 	.current-week {
-        margin-top: 2%;
-		font-size: 40px;
+		margin-top: 2%;
+		margin-bottom: 1%;
+		font-size: 35px;
 		color: white;
-        display: flex;
-        justify-content: center;
+		font-family: Lato;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
 	}
 	.center {
 		display: flex;
 		justify-content: center;
-
 	}
 	.event-button {
+		box-shadow: 0 4px 4px #00000040;
 		background-color: #6d6af7;
-		display: inline;
+		margin-bottom: 10%;
 		color: white;
+		font-weight: 600;
 		border: hidden;
 		padding: 5px;
 		font-size: 18px;
-		border-radius: 5px;
+		border-radius: 6px;
+		padding-left: 13px;
+		padding-right: 10px;
+		margin-top: 7px;
+		margin-bottom: 10px;
 	}
 	.plus-image {
 		height: 22px;
@@ -80,5 +110,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		font-family: Lato;
+		font-weight: 600;
 	}
 </style>

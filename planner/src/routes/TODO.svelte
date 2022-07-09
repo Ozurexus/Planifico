@@ -33,7 +33,6 @@
 			: CurrentSort === 'completed'
 			? ToDoList.filter((todo) => todo.completed)
 			: ToDoList.filter((todo) => !todo.completed);
-	//TODO
 	function checkAllToDoList(event: any) {
 		ToDoList.forEach((todo) => (todo.completed = event.target.checked));
 		ToDoList = ToDoList;
