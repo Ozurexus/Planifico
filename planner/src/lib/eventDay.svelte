@@ -21,7 +21,7 @@
 					<TableDateElement date={eventDay.date} />
 				</div>
 				{#each eventDay.events as event, id}
-					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>{event.time}</div>
+					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}><div class="eventTimeContent">{event.time}</div></div>
 					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
 						<div class="eventTitle">{event.title}</div>
 						<div class="eventTags">
@@ -45,10 +45,9 @@
 		display: grid;
 		/* gap: 10px; */
 		background-color: white;
-		padding: 12px;
+		padding: 30px 30px;
 		border-radius: 28px;
 		width: 80%;
-		margin-top: 2%;
 		margin-left: 10%;
 		font-family: Lato;
 		font-weight: 550;
@@ -57,16 +56,16 @@
 	.tableHeader {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 300px 260px 1fr;
-		font-size: 23px;
-		padding: 17px;
+		grid-template-columns: 15% 20% 65%;
+		font-size: 40px;
+		padding-bottom: 20px;
 	}
 	.background-day {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 300px 260px 1fr;
+		grid-template-columns: 15% 20% 65%;
 		font-size: 23px;
-		/* gap:10px; */
+
 		border-top: 3px solid #dfdfdf;
 	}
 	.eventsDate {
@@ -75,28 +74,35 @@
 	}
 	.eventTime {
 		border-top: 1px solid #dfdfdf;
-		background-color: white;
-		padding: 20px;
 		display: flex;
+		background-color: white;
+		padding: 20px 0px;
+		font-size: 28px;
+	}
+	.eventTimeContent{
 		align-self: center;
 	}
 	.firstEventTime {
 		background-color: white;
-		padding: 20px;
-		align-self: center;
+		display: flex;
+		padding: 20px 0px;
+		font-size: 28px;
+		
 	}
 	.eventTitleAndTags {
 		border-top: 1px solid #dfdfdf;
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 20px;
+		padding: 20px 0px;
+		font-size: 28px;
 	}
 	.firstEventTitleAndTags {
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 20px;
+		padding: 20px 0px;
+		font-size: 28px;
 	}
 	.eventTags {
 		display: flex;
@@ -106,6 +112,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-self: center;
+		font-size: 28px;
 	}
 	.eventTag {
 		align-self: center;
