@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import Taglist from '$lib/Taglist.svelte';
-	let eventName: string = '';
+	import DatePicker from '$lib/DatePicker.svelte';
+	import { CalendarEvent } from '$lib/event';
+
+	let calendarEvent: CalendarEvent = new CalendarEvent("","",[""]);
+	function addDate(myDate: any) {
+		let date:string[] = myDate.detail.myDate.split(" ");
+
+		// calendarEvent.time = ;
+	}
+
 	const dispatch = createEventDispatcher();
 	function send() {
 		console.log('send');
-		dispatch('send', { eventName });
+		dispatch('send', { calendarEvent });
 	}
 	function close() {
 		console.log('close');
@@ -19,7 +28,7 @@
 			<h2>Add new event</h2>
 			<input
 				on:click={close}
-                class="button"
+				class="button"
 				id="close"
 				type="image"
 				name="close_button"
@@ -27,8 +36,14 @@
 				alt="close button"
 			/>
 		</div>
-		<input id="input-name" type="text" placeholder="Type event name" bind:value={eventName} />
+		<input
+			id="input-name"
+			type="text"
+			placeholder="Type event name"
+			bind:value={calendarEvent.title}
+		/>
 		<p>Choose a date</p>
+		<DatePicker on:sendDate={addDate} />
 		<p>Select a tag</p>
 		<Taglist />
 		<button class="button" id="send" on:click={send}>Add</button>
@@ -70,10 +85,10 @@
 	h2 {
 		color: rgb(109, 106, 247);
 	}
-    .button{
-        cursor: pointer;
+	.button {
+		cursor: pointer;
 		border-style: none;
-    }
+	}
 	#close {
 		width: 28px;
 		position: absolute;

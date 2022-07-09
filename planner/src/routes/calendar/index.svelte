@@ -1,18 +1,10 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
-
 	import EventDay from '$lib/eventDay.svelte';
-	$: shown = false;
 
+	$: shown = false;
 	$: events = ['shalom', 'hava', 'nagila'];
 
-	function showPopup() {
-		shown = true;
-	}
-
-	function close() {
-		shown = false;
-	}
 	function addNewEvent(event: any) {
 		shown = false;
 		events = [...events, event.detail.eventName];
@@ -43,16 +35,23 @@
 		},
 		{
 			date: lastDay,
-			events: [new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', ['#chill', '#beer', '#vodka','#popcorn', '#subtitles'])]
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
+					'#chill',
+					'#beer',
+					'#vodka',
+					'#popcorn',
+					'#subtitles'
+				])
+			]
 		}
 	];
 </script>
 
-
 <main>
 	<p class="current-week">{firstDayStr} - {lastDayStr}</p>
 	<div class="center">
-		<button class="event-button" on:click={showPopup}
+		<button class="event-button" on:click={() => (shown = true)}
 			><div class="button-content">
 				New event<img class="plus-image" src="plus.png" alt="plus" />
 			</div></button
@@ -60,17 +59,16 @@
 	</div>
 	<div class="center">
 		{#if shown}
-			<Popup on:send={addNewEvent} on:close={close} />
+			<Popup on:send={addNewEvent} on:close={() => (shown = false)} />
 		{/if}
 	</div>
 	<div class="container">
-			<EventDay {eventDays}/>
+		<EventDay {eventDays} />
 	</div>
 </main>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
 	.current-week {
 		margin-top: 2%;

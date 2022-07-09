@@ -30,7 +30,6 @@
 					name="close_button"
 					src="close_tag.png"
 					alt="close button"
-
 				/>
 			</div>
 		{/each}
