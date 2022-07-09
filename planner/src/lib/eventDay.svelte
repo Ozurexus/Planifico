@@ -32,6 +32,12 @@
 									{eventTag}
 								</div>
 							{/each}
+							<div class="close" on:click={()=>{}}>
+								<img
+								class="cross"
+								src="https://w7.pngwing.com/pngs/280/932/png-transparent-computer-icons-compass-north-close-angle-technic-compass-thumbnail.png"
+								alt=""
+							/></div>
 						</div>
 					</div>
 				{/each}
@@ -42,7 +48,14 @@
 
 <style>
 	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
-
+	.close{
+		display: flex;
+		align-self: center;
+	}
+	.cross {
+		height: 40px;
+		width: 40px;
+	}
 	.table {
 		display: grid;
 		/* gap: 10px; */

@@ -10,38 +10,38 @@
 	let firstDayStr: string = dateToString(firstDay);
 	let lastDayStr: string = dateToString(lastDay);
 	$: eventDays = [
-		// {
-		// 	date: new Date('2022-7-1'),
-		// 	events: [
-		// 		new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
-		// 			'chill',
-		// 			'beer',
-		// 			'chips',
-		// 			'Pypcorn',
-		// 			'subtitles'
-		// 		])
-		// 	]
-		// },
-		// {
-		// 	date: new Date('3 Jul 2022'),
-		// 	events: [
-		// 		new CalendarEvent('Meeting', '10:00 AM - 11:30 AM', ['work']),
-		// 		new CalendarEvent('Weekly Meeting', '2:00 PM - 3:00 PM', ['work']),
-		// 		new CalendarEvent('Month Meeting', '16:00 PM - 19:00 PM', ['work', 'important'])
-		// 	]
-		// },
-		// {
-		// 	date: new Date('2022-10-16'),
-		// 	events: [
-		// 		new CalendarEvent('Cinema', '10:00 AM - 11:30 AM', [
-		// 			'chill',
-		// 			'beer',
-		// 			'chips',
-		// 			'popcorn',
-		// 			'subtitles'
-		// 		])
-		// 	]
-		// }
+		{
+			date: new Date('2022-7-1'),
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
+					'chill',
+					'beer',
+					'chips',
+					'Pypcorn',
+					'subtitles'
+				])
+			]
+		},
+		{
+			date: new Date('3 Jul 2022'),
+			events: [
+				new CalendarEvent('Meeting', '10:00 AM','11:30 AM', ['work']),
+				new CalendarEvent('Weekly Meeting', '2:00 PM','3:00 PM', ['work']),
+				new CalendarEvent('Month Meeting', '16:00 PM','19:00 PM', ['work', 'important'])
+			]
+		},
+		{
+			date: new Date('2022-10-16'),
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
+					'chill',
+					'beer',
+					'chips',
+					'popcorn',
+					'subtitles'
+				])
+			]
+		}
 	];
 
 	function addNewEvent(event: CustomEvent) {
