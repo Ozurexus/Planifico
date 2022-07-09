@@ -1,7 +1,7 @@
 <script lang="ts">
 	// это проверка, что юзер зашел!!!
     import { onMount } from "svelte";
-	import {isAuth} from "../lib/middleware"
+	import {isAuth} from "../internal/middleware"
     onMount(() => {
 		if (!isAuth()){
 			location.replace("http://localhost:3000")

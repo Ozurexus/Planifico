@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import { getCurrentUser } from "./out";
+    import { getCurrentUser } from "../internal/out";
 
 
     export const signOut = async () => {

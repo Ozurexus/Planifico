@@ -1,6 +1,6 @@
 <script>
     import ButtonSignIn from "../lib/ButtonSignIn.svelte"
-    import {isAuth} from "../lib/middleware"
+    import {isAuth} from "../internal/middleware"
 
     // это проверка, что юзер зашел!!!
     import { onMount } from "svelte";

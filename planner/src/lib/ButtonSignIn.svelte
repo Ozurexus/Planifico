@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { config as conf} from "./config";
-    import { getUser} from "./graph";
+    import { config as conf} from "../internal/config";
+    import { getUser} from "../internal/graph";
     import {PublicClientApplication} from "@azure/msal-browser";
     import {InteractionType} from "@azure/msal-browser";
     import type { User, Event } from 'microsoft-graph';
@@ -8,7 +8,7 @@
     import type { AccountInfo } from "@azure/msal-browser";
     import { onMount, setContext } from "svelte";
     import { Client} from '@microsoft/microsoft-graph-client';
-    import { getCurrentUser } from "$lib/out";
+    import { getCurrentUser } from "../internal/out";
 
     export const msalInstance = new PublicClientApplication({
         auth: {
