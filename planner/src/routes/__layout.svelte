@@ -3,8 +3,8 @@
 	let activeElem: string = 'home';
 	let items: { href: string; name: string; id: number }[] = [
 		{ href: '', name: 'home', id: 0 },
+		{ href: 'calendar', name: 'calendar', id: 2 },
 		{ href: 'TODO', name: 'To-do list', id: 1 },
-		{ href: 'calendar', name: 'calendar', id: 2 }
 	];
 </script>
 
@@ -50,7 +50,7 @@
 		margin-right: 20px;
 	}
 	.topnav a:hover{
-		color:rgb(227, 227, 22);
+		color:pink;
 	}
 
 	/* Change the color of links on hover */

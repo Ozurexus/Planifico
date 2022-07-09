@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { CalendarEvent } from '$lib/event';
+	import TableDateElement from '$lib/TableDateElement.svelte';
+
 	export let eventDays: {
 		date: Date;
 		events: CalendarEvent[];
@@ -16,11 +18,11 @@
 		{#each eventDays as eventDay, id}
 			<div class="background-day">
 				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-					{eventDay.date.toDateString()}
+					<TableDateElement date={eventDay.date} />
 				</div>
 				{#each eventDay.events as event, id}
 					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>{event.time}</div>
-					<div class={id!=0 ? "eventTitleAndTags": "firstEventTitleAndTags"}>
+					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
 						<div class="eventTitle">{event.title}</div>
 						<div class="eventTags">
 							{#each event.tags as eventTag}
@@ -37,8 +39,7 @@
 </main>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
 	.table {
 		display: grid;
@@ -51,16 +52,15 @@
 		margin-left: 10%;
 		font-family: Lato;
 		font-weight: 550;
-		color: rgba(96, 49, 98, 1)
-
+		color: rgba(96, 49, 98, 1);
 	}
-    .tableHeader{
-        background-color: white;
+	.tableHeader {
+		background-color: white;
 		display: grid;
 		grid-template-columns: 300px 260px 1fr;
 		font-size: 23px;
-        padding: 17px;
-    }
+		padding: 17px;
+	}
 	.background-day {
 		background-color: white;
 		display: grid;
@@ -76,11 +76,14 @@
 	.eventTime {
 		border-top: 1px solid #dfdfdf;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
+		display: flex;
+		align-self: center;
 	}
 	.firstEventTime {
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
+		align-self: center;
 	}
 	.eventTitleAndTags {
 		border-top: 1px solid #dfdfdf;
@@ -89,21 +92,28 @@
 		background-color: white;
 		padding: 20px;
 	}
-    .firstEventTitleAndTags {
+	.firstEventTitleAndTags {
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
-		padding: 17px;
+		padding: 20px;
 	}
 	.eventTags {
 		display: flex;
 		flex-wrap: wrap;
 	}
-    .eventTitle{
-        display: flex;
-        flex-wrap: wrap;
-    }
+	.eventTitle {
+		display: flex;
+		flex-wrap: wrap;
+		align-self: center;
+	}
 	.eventTag {
+		align-self: center;
 		margin: 5px;
+		border: 2px solid;
+		border-radius: 25px;
+		padding: 3px;
+		padding-left: 9px;
+		padding-right: 9px;
 	}
 </style>
