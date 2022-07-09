@@ -1,5 +1,15 @@
 <script lang="ts">
-	import Popup from '$lib/Popup.svelte';
+	// это проверка, что юзер зашел!!!
+    import { onMount } from "svelte";
+	import {isAuth} from "../lib/middleware"
+	
+    onMount(() => {
+        if (!isAuth()){
+            location.replace("http://localhost:3000")
+        }
+    })
+
+	import Popup from '../components/Popup.svelte';
 	$: shown = false;
 
 	$: events = ['shalom', 'hava', 'nagila'];

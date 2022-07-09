@@ -1,5 +1,14 @@
 <script lang="ts">
-	import TodoItem from '$lib/TodoItem.svelte';
+	// это проверка, что юзер зашел!!!
+    import { onMount } from "svelte";
+	import {isAuth} from "../lib/middleware"
+    onMount(() => {
+		if (!isAuth()){
+			location.replace("http://localhost:3000")
+		}
+    })
+	
+	import TodoItem from '../components/TodoItem.svelte';
 	let newTodoTitle: string = '';
 	let currentFilter: string = 'all';
 	let nextId: number = 1;

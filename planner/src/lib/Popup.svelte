@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Taglist from '$lib/Taglist.svelte';
+	import Taglist from './Taglist.svelte';
 	let eventName: string = '';
 	const dispatch = createEventDispatcher();
+
+	
 	function send() {
 		console.log('send');
 		dispatch('send', { eventName });
