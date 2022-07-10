@@ -2,36 +2,15 @@
 	import { createEventDispatcher } from 'svelte';
 	import Taglist from '$lib/Taglist.svelte';
 	import DatePicker from '$lib/DatePicker.svelte';
-	import { CalendarEvent } from '$lib/event';
+	import { CalendarEvent } from '../internal/event';
 
 	let date: Date;
-	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', []);
-	function from24to12HoursSystem(time24: string): string {
-		// convert from 24-hours time format to 12-hours time format(AM and PM)
-		let splitted: string[] = time24.split(':');
-		let hour: number = Number(splitted[0]);
-		let minutes: number = Number(splitted[1]);
-		let amOrPm: string = 'PM';
-		if (hour == 0) {
-			amOrPm = 'AM';
-			hour = 12;
-		} else if (hour < 12) {
-			amOrPm = 'AM';
-		} else if (hour >= 12) {
-			amOrPm = 'PM';
-			hour -= 12;
-			if (hour == 0) hour = 12;
-		}
-		let hourStr: string = `${hour}`;
-		if (hour < 10) hourStr = `0${hour}`;
-		let minutesStr: string = `${minutes}`;
-		if (minutes < 10) minutesStr = `0${minutes}`;
-		return `${hourStr}:${minutesStr} ${amOrPm}`;
-	}
+	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', [], '');
+
 	function addDateAndTime(event: any) {
 		date = new Date(event.detail.date);
-		calendarEvent.timeStart = from24to12HoursSystem(event.detail.timeStart);
-		calendarEvent.timeEnd = from24to12HoursSystem(event.detail.timeEnd);
+		calendarEvent.timeStart = event.detail.timeStart;
+		calendarEvent.timeEnd = event.detail.timeEnd;
 		// console.log(calendarEvent, date);
 		console.log('date and time added');
 	}

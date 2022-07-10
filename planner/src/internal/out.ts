@@ -1,7 +1,7 @@
 // this package is needed to for ui
 
 import { config as conf} from "./config";
-import { createEvent, getUser, getUserYearCalendar} from "./graph";
+import { createEvent, getUser, getUserYearCalendar, deleteEvent} from "./graph";
 import * as Msal from "msal";
 import type { Configuration } from "msal";
 import { findIana } from 'windows-iana';
@@ -46,6 +46,8 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
     const ianaTimeZones = findIana(user.mailboxSettings?.timeZone || 'UTC');
     const events: Event[] = await getUserYearCalendar(authProvider, ianaTimeZones[0].valueOf());
     
+    console.log(events)
+    
     const result: eventDays[] = [];
     let prev: CalendarEvent[] = [];
     
@@ -62,17 +64,16 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
             const end = format(parseISO(events[i].end!.dateTime!), "hh:mm");
             const title: string = parseEventText(events[i].subject!);
             const tags: string[] = parseEventTags(events[i].subject!);
+            const id: string = events[i].id!; 
             
             if (!dateEqualsByDay(prevDate, curDate)){
                 break;
             }
-            prev.push(new CalendarEvent(title, start, end, tags));
+            prev.push(new CalendarEvent(title, start, end, tags, id));
             i++;
         }
         result.push(new eventDays(prevDate, prev));
     }
-
-    console.log(result);
     return result;
 }
 
@@ -105,7 +106,19 @@ export async function newEventCalendar(account: AccountInfo, date: Date, event: 
     console.log("new event from ", user.displayName)
 
 }
+
+export async function eventDelete(account: AccountInfo, eventID: string): Promise<void>{
+    const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
+        msalInstance, {
+            account: account,
+            scopes: conf.scopes,
+            interactionType: InteractionType.Popup
+        });
     
+    deleteEvent(authProvider, eventID);
+    console.log("delete event")
+
+}
 
 // this function returns beginning of weekend
 export function getCurrentWeekStart(): Date{    

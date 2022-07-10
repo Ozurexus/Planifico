@@ -41,11 +41,12 @@ export function timeForCreationEvent(d: Date, hhmm: string){
     const datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
     return datestring + "T" + hhmm;
 }
+
 export class eventDays{
-    day: Date
-    Events: CalendarEvent[]
-    constructor(day: Date, Events: CalendarEvent[]){
-        this.Events = Events;
-        this.day = day;
+    date: Date
+    events: CalendarEvent[]
+    constructor(date: Date, Events: CalendarEvent[]){
+        this.events = Events;
+        this.date = date;
     }
 } 

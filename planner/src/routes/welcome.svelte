@@ -17,6 +17,7 @@
     async function getCalendar(){
         let item1 = localStorage.getItem("currentAccount")
         const curAccount = JSON.parse(item1!);
+        
         const events = await getCurrentCalendar(curAccount);
     }
     async function newEvent(){

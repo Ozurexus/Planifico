@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
 	import EventDay from '$lib/eventDay.svelte';
-	import { CalendarEvent } from '$lib/event';
+	import type {CalendarEvent} from '../internal/event';
+	import {getCurrentCalendar, newEventCalendar} from "../internal/out"
+	import { onMount } from 'svelte';
+	import type {eventDays} from "../internal/calendar"
 
 	$: shown = false;
 	let today: Date = new Date();
@@ -9,71 +12,36 @@
 	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
 	let firstDayStr: string = dateToString(firstDay);
 	let lastDayStr: string = dateToString(lastDay);
-	$: eventDays = [
-		{
-			date: new Date('2022-7-1'),
-			events: [
-				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
-					'chill',
-					'beer',
-					'chips',
-					'Pypcorn',
-					'subtitles'
-				])
-			]
-		},
-		{
-			date: new Date('3 Jul 2022'),
-			events: [
-				new CalendarEvent('Meeting', '10:00 AM','11:30 AM', ['work']),
-				new CalendarEvent('Weekly Meeting', '2:00 PM','3:00 PM', ['work']),
-				new CalendarEvent('Month Meeting', '16:00 PM','19:00 PM', ['work', 'important'])
-			]
-		},
-		{
-			date: new Date('2022-10-16'),
-			events: [
-				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
-					'chill',
-					'beer',
-					'chips',
-					'popcorn',
-					'subtitles'
-				])
-			]
-		},
-		{
-			date: firstDay,
-			events: [
-				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
-					'chill',
-					'beer',
-					'chips',
-					'popcorn',
-					'subtitles'
-				])
-			]
-		}
-	];
 
-	function addNewEvent(event: CustomEvent) {
+
+	let eventDays: eventDays[] = [];
+	onMount (async () => {
+		let item1 = localStorage.getItem("currentAccount")
+    	const curAccount = JSON.parse(item1!);
+		await getCurrentCalendar(curAccount)
+		.then((value) => {
+			eventDays = value;
+		})
+	})
+	
+
+	async function addNewEvent(event: CustomEvent){
 		shown = false;
 		let date: Date = new Date(event.detail.date);
 		let calendarEvent: CalendarEvent = event.detail.calendarEvent;
-		let was: boolean = false;
-		eventDays.forEach((obj: any) => {
-			// console.log(obj.date.getTime(), date.getTime())
-			if (obj.date.getTime() === date.getTime()) {
-				obj.events = [...obj.events, calendarEvent];
-				was = true;
-			}
-		});
-		if (!was) eventDays = [...eventDays, { date: date, events: [calendarEvent] }];
-		console.log(eventDays);
 
-		eventDays.sort((a:any, b:any) => a.date.getTime()-b.date.getTime());
+		let item1 = localStorage.getItem("currentAccount")
+		const curAccount = JSON.parse(item1!);
+		console.log(event.detail.calendarEvent);
+		
+		await newEventCalendar(curAccount, date, calendarEvent)
+		await getCurrentCalendar(curAccount)
+			.then((value) => {
+				eventDays = value;
+			})
+		
+		window.location.reload();
 
-		eventDays = eventDays;
 		console.log(eventDays);
 		console.log('new event added');
 	}

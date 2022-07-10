@@ -66,3 +66,12 @@ export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticatio
     .api('/me/events')
     .post(newEvent);
 }
+
+export async function deleteEvent(authProvider: AuthCodeMSALBrowserAuthenticationProvider, eventID: string): Promise<Event> {
+  const graphClient = Client.initWithMiddleware({
+    authProvider: authProvider
+  });
+  return await graphClient!
+    .api(`/me/events/${eventID}`)
+    .delete();
+}
