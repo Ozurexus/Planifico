@@ -10,7 +10,7 @@
         if (isAuth()){
             items = [{ href: '', name: 'home', id: 0 },
 		{ href: 'calendar', name: 'calendar', id: 2 },
-		{ href: 'TODO', name: 'To-do list', id: 1 },]
+		{ href: 'todo', name: 'To-do list', id: 1 },]
         }else{
 			items = [{ href: '', name: 'home', id: 0 }]
 		}
