@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let date: Date;
-    // console.log(date.toDateString());
+    export let passedStyle:boolean;
     let dateStr: string[] = date.toDateString().split(" ");
     let dayOfWeek: string = dateStr[0];
     let month: string = dateStr[1];
@@ -32,6 +32,11 @@
         font-size: 50px;
         align-self: center;
     }
+    .day-passedStyle{
+        font-size: 50px;
+        align-self: center;
+        color: silver;
+    }
     .dayOfWeekAndYearAndMonth{
         margin-left: 20px;
         display: flex;
@@ -39,6 +44,10 @@
     }
     .dayOfWeek{
         font-size: 32px;
+    }
+    .dayOfWeek-passedStyle{
+        font-size: 32px;
+        color: silver;
     }
     .monthAndYear{
         font-size: 18px;
