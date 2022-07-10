@@ -1,17 +1,55 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Taglist from './Taglist.svelte';
-	let eventName: string = '';
+	import Taglist from '$lib/Taglist.svelte';
+	import DatePicker from '$lib/DatePicker.svelte';
+	import { CalendarEvent } from '$lib/event';
+
+	let date: Date;
+	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', []);
+	function from24to12HoursSystem(time24: string): string {
+		// convert from 24-hours time format to 12-hours time format(AM and PM)
+		let splitted: string[] = time24.split(':');
+		let hour: number = Number(splitted[0]);
+		let minutes: number = Number(splitted[1]);
+		let amOrPm: string = 'PM';
+		if (hour == 0) {
+			amOrPm = 'AM';
+			hour = 12;
+		} else if (hour < 12) {
+			amOrPm = 'AM';
+		} else if (hour >= 12) {
+			amOrPm = 'PM';
+			hour -= 12;
+			if (hour == 0) hour = 12;
+		}
+		let hourStr: string = `${hour}`;
+		if (hour < 10) hourStr = `0${hour}`;
+		let minutesStr: string = `${minutes}`;
+		if (minutes < 10) minutesStr = `0${minutes}`;
+		return `${hourStr}:${minutesStr} ${amOrPm}`;
+	}
+	function addDateAndTime(event: any) {
+		date = new Date(event.detail.date);
+		calendarEvent.timeStart = from24to12HoursSystem(event.detail.timeStart);
+		calendarEvent.timeEnd = from24to12HoursSystem(event.detail.timeEnd);
+		// console.log(calendarEvent, date);
+		console.log('date and time added');
+	}
+	function changeTags(event: any) {
+		calendarEvent.tags = event.detail.tags;
+		console.log('tags changed');
+	}
+
 	const dispatch = createEventDispatcher();
 
 	
 	function send() {
+		dispatch('send', { date, calendarEvent });
 		console.log('send');
-		dispatch('send', { eventName });
 	}
 	function close() {
-		console.log('close');
 		dispatch('close', {});
+		console.log('close');
 	}
 </script>
 
@@ -21,7 +59,7 @@
 			<h2>Add new event</h2>
 			<input
 				on:click={close}
-                class="button"
+				class="button"
 				id="close"
 				type="image"
 				name="close_button"
@@ -29,11 +67,21 @@
 				alt="close button"
 			/>
 		</div>
-		<input id="input-name" type="text" placeholder="Type event name" bind:value={eventName} />
-		<p>Choose a date</p>
+		<input
+			id="input-name"
+			type="text"
+			placeholder="Type event name"
+			bind:value={calendarEvent.title}
+		/>
+		<DatePicker on:sendDate={addDateAndTime} />
 		<p>Select a tag</p>
-		<Taglist />
-		<button class="button" id="send" on:click={send}>Add</button>
+		<Taglist on:change={changeTags} />
+		<button
+			class="button"
+			id="send"
+			disabled={!date || !calendarEvent.timeStart || !calendarEvent.timeEnd || !calendarEvent.title}
+			on:click={send}>Add</button
+		>
 	</div>
 </main>
 
@@ -72,10 +120,16 @@
 	h2 {
 		color: rgb(109, 106, 247);
 	}
-    .button{
-        cursor: pointer;
+	.button {
+		cursor: pointer;
 		border-style: none;
-    }
+	}
+	#send:hover:enabled {
+		background-color: #605edc;
+	}
+	#close:hover {
+		background-color: rgb(230, 230, 230);
+	}
 	#close {
 		width: 28px;
 		position: absolute;
@@ -101,5 +155,9 @@
 		border-radius: 6px;
 		color: white;
 		font-size: 20px;
+	}
+	#send:disabled {
+		cursor: auto;
+		background-color: rgb(215, 215, 215);
 	}
 </style>

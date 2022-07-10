@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { CalendarEvent } from '$lib/event';
 	import TableDateElement from '$lib/TableDateElement.svelte';
+	export let firstDay: Date; // first day of the week that showed
+	export let lastDay: Date; // last day of the week that showed
 	export let eventDays: {
 		date: Date;
 		events: CalendarEvent[];
@@ -15,32 +17,50 @@
 			<div>Event</div>
 		</div>
 		{#each eventDays as eventDay, id}
-			<div class="background-day">
-				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-					<TableDateElement date={eventDay.date} />
-				</div>
-				{#each eventDay.events as event, id}
-					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>
-						<div class="eventTimeContent">{event.timeStart} - {event.timeEnd}</div>
+			{#if firstDay.getTime() <= eventDay.date.getTime() && eventDay.date.getTime() <= lastDay.getTime()}
+				<div class="background-day">
+					<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
+						<TableDateElement date={eventDay.date} />
 					</div>
-					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
-						<div class="eventTitle">{event.title}</div>
-						<div class="eventTags">
-							{#each event.tags as eventTag}
-								<div class="eventTag">
-									{eventTag}
-								</div>
-							{/each}
+					{#each eventDay.events as event, id}
+						<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>
+							<div class="eventTimeContent">{event.timeStart} - {event.timeEnd}</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+						<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
+							<div class="eventTitle">{event.title}</div>
+							<div class="eventTags">
+								{#each event.tags as eventTag}
+									<div class="eventTag">
+										{eventTag}
+									</div>
+								{/each}
+								<div class="close" on:click={() => {}}>
+									<img
+										class="cross"
+										src="https://cdn-icons-png.flaticon.com/128/966/966615.png"
+										alt=""
+									/>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{/if}
 		{/each}
 	</div>
 </main>
 
 <style>
 	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
+	.close {
+		display: flex;
+		align-self: center;
+	}
+	.cross {
+		height: 22px;
+		width: 22px;
+		margin-left: 10px;
+	}
 	.table {
 		display: grid;
 		/* gap: 10px; */
@@ -56,15 +76,16 @@
 	.tableHeader {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 15% 20% 65%;
+		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
 		font-size: 40px;
 		padding-bottom: 20px;
 	}
 	.background-day {
 		background-color: white;
 		display: grid;
-		grid-template-columns: 15% 20% 65%;
+		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
 		font-size: 23px;
+
 		border-top: 3px solid #dfdfdf;
 	}
 	.eventsDate {
