@@ -41,7 +41,10 @@ export function timeForCreationEvent(d: Date, hhmm: string){
     const datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
     return datestring + "T" + hhmm;
 }
-
+export function parseTimehhmm(t: string): string{
+    const tmp = t.split("T")[1].split(":")
+    return tmp[0] + ":" + tmp[1]
+}
 export class eventDays{
     date: Date
     events: CalendarEvent[]
