@@ -116,7 +116,6 @@
 		right: 15px;
 	}
 	#input-name {
-		color: rgba(203, 203, 203, 1);
 		text-align: center;
 		font-size: 20px;
 		width: 80%;
