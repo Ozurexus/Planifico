@@ -1,7 +1,7 @@
 // this package is needed to for ui
 
 import { config as conf} from "./config";
-import { getUser, getUserWeekCalendar} from "./graph";
+import { getUser, getUserYearCalendar} from "./graph";
 import * as Msal from "msal";
 import type { Configuration } from "msal";
 import { findIana } from 'windows-iana';
@@ -18,7 +18,8 @@ import { msalInstance } from "./authService";
 
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { add, format, getDay, parseISO } from 'date-fns';
-import {formatDateTime} from "./DayEvents"
+import {dateEqualsByDay, eventDays, parseEventTags, parseEventText} from "./calendar";
+import { CalendarEvent } from "./event";
 
 
 // return user that has signed in
@@ -33,7 +34,7 @@ export async function getCurrentUser(account: AccountInfo): Promise<User>{
 }
 
 // return user that has signed in
-export async function getCurrentCalendar(account: AccountInfo): Promise<Event[]>{
+export async function getCurrentCalendar(account: AccountInfo): Promise<eventDays[]>{
     const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
         msalInstance, {
             account: account,
@@ -43,12 +44,34 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<Event[]>
 
     const user: User = await getCurrentUser(account);
     const ianaTimeZones = findIana(user.mailboxSettings?.timeZone || 'UTC');
-    const events: Event[] = await getUserWeekCalendar(authProvider, ianaTimeZones[0].valueOf());
+    const events: Event[] = await getUserYearCalendar(authProvider, ianaTimeZones[0].valueOf());
     
-    events.forEach(event => {
-        console.log(event.start?.dateTime, " - ", event.end?.dateTime, event.subject, event.organizer!.emailAddress);
-    });
-    return events;
+    const result: eventDays[] = [];
+    let prev: CalendarEvent[] = [];
+    
+    let i = 0;
+    while (i < events.length){
+        let curDate = new Date(events[i].start!.dateTime!);
+        const prevDate = new Date(events[i].start!.dateTime!);
+
+        prev = [];
+
+        while (i < events.length && dateEqualsByDay(prevDate, curDate)){
+            curDate = new Date(events[i].start!.dateTime!);
+            const start = format(parseISO(events[i].start!.dateTime!), "hh:mm");
+            const end = format(parseISO(events[i].end!.dateTime!), "hh:mm");
+            const title: string = parseEventText(events[i].subject!);
+            const tags: string[] = parseEventTags(events[i].subject!);
+            if (!dateEqualsByDay(prevDate, curDate)){
+                break;
+            }
+            prev.push(new CalendarEvent(title, start, end, tags));
+            i++;
+        }
+        result.push(new eventDays(prevDate, prev));
+    }
+    console.log(result);
+    return result;
 }
 
 // this function returns beginning of weekend
@@ -63,7 +86,7 @@ export function getCurrentWeekStart(): Date{
     return result;
 }
 
-// this function returns end of weeken
+// this function returns end of weekend
 export function getCurrentWeekEnd(weekStart: Date): Date{
     const result = endOfWeek(weekStart)
     // can use like format(result, 'MMMM d, yyyy')

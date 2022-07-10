@@ -16,15 +16,19 @@ export async function getUser(authProvider: AuthCodeMSALBrowserAuthenticationPro
   return user;
 }
 
-export async function getUserWeekCalendar(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+export async function getUserYearCalendar(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
                                           timeZone: string): Promise<Event[]> {
 
   const now = new Date();
   const graphClient = Client.initWithMiddleware({
     authProvider: authProvider
   });
+
+  const end = new Date(now);
+  end.setDate(end.getDate() + 365);
+
   const startDateTime = zonedTimeToUtc(startOfWeek(now), timeZone).toISOString();
-  const endDateTime = zonedTimeToUtc(endOfWeek(now), timeZone).toISOString();
+  const endDateTime = zonedTimeToUtc(end, timeZone).toISOString();
   const response: PageCollection = await graphClient!
     .api('/me/calendarview')
     .header('Prefer', `outlook.timezone="${timeZone}"`)
