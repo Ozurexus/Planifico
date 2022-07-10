@@ -8,7 +8,14 @@ const config = {
 	preprocess: sveltePreprocess(),
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		vite: {
+			server: {
+				fs: {
+					allow: './static'
+				}
+			}
+		}
 	}
 };
 

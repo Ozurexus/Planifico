@@ -20,10 +20,19 @@
     };   
 </script>
 
-<style>
-
-</style>
-
-<button on:click={signOut}>
+<button class="signout-button" on:click={signOut}>
     <slot/>
 </button>
+
+<style>
+    .signout-button:hover{
+        color: grey;
+    }
+    .signout-button{
+        color: white;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        font-weight: 600;
+    }
+</style>

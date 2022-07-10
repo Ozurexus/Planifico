@@ -8,7 +8,7 @@
 	let authorized: boolean = false;
     onMount(async () => {
         if (isAuth()){
-            items = [{ href: '', name: 'home', id: 0 },
+            items = [{ href: '', name: 'PLANIFICO', id: 0 },
 		{ href: 'calendar', name: 'calendar', id: 2 },
 		{ href: 'todo', name: 'To-do list', id: 1 },]
         }else{
@@ -44,9 +44,10 @@
 		background-color: #6d6af7;
 		overflow: hidden;
 		display: flex;
-		justify-content: center;
+		justify-content:left;
 		font-family: Lato;
 		font-weight: 600;
+		padding-left: 50px;
 	}
 
 	/* Style the links inside the navigation bar */
