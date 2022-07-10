@@ -20,6 +20,27 @@ export function parseEventText(eventText: string){
 export function dateEqualsByDay(date: Date, datePrev: Date){
     return datePrev.getDate() === date.getDate() && datePrev.getDay() === date.getDay() && datePrev.getMonth() === date.getMonth() && datePrev.getFullYear() === date.getFullYear();
 }
+
+// returns subject for outlook api 
+export function generateSubject(tags: string[], title: string): string{
+    if (tags.length === 0){
+        return title;
+    }
+    let tagsText = "";
+    tags.forEach(tag => {
+        if (tagsText === ""){
+            tagsText = tag;
+        }else{
+            tagsText = tagsText + " " + tag;
+        }
+    });
+    return title + " ~~~ " + tagsText;
+}
+
+export function timeForCreationEvent(d: Date, hhmm: string){
+    const datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+    return datestring + "T" + hhmm;
+}
 export class eventDays{
     day: Date
     Events: CalendarEvent[]

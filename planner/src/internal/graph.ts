@@ -58,8 +58,10 @@ export async function getUserYearCalendar(authProvider: AuthCodeMSALBrowserAuthe
   }
 }
 
-export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-                                  newEvent: Event, graphClient: Client): Promise<Event> {
+export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticationProvider, newEvent: Event): Promise<Event> {
+  const graphClient = Client.initWithMiddleware({
+    authProvider: authProvider
+  });
   return await graphClient!
     .api('/me/events')
     .post(newEvent);

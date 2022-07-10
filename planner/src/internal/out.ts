@@ -1,7 +1,7 @@
 // this package is needed to for ui
 
 import { config as conf} from "./config";
-import { getUser, getUserYearCalendar} from "./graph";
+import { createEvent, getUser, getUserYearCalendar} from "./graph";
 import * as Msal from "msal";
 import type { Configuration } from "msal";
 import { findIana } from 'windows-iana';
@@ -18,7 +18,7 @@ import { msalInstance } from "./authService";
 
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { add, format, getDay, parseISO } from 'date-fns';
-import {dateEqualsByDay, eventDays, parseEventTags, parseEventText} from "./calendar";
+import {dateEqualsByDay, eventDays, generateSubject, parseEventTags, parseEventText, timeForCreationEvent} from "./calendar";
 import { CalendarEvent } from "./event";
 
 
@@ -62,6 +62,7 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
             const end = format(parseISO(events[i].end!.dateTime!), "hh:mm");
             const title: string = parseEventText(events[i].subject!);
             const tags: string[] = parseEventTags(events[i].subject!);
+            
             if (!dateEqualsByDay(prevDate, curDate)){
                 break;
             }
@@ -70,9 +71,41 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
         }
         result.push(new eventDays(prevDate, prev));
     }
+
     console.log(result);
     return result;
 }
+
+export async function newEventCalendar(account: AccountInfo, date: Date, event: CalendarEvent): Promise<void>{
+    const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
+        msalInstance, {
+            account: account,
+            scopes: conf.scopes,
+            interactionType: InteractionType.Popup
+        });
+    const subject = generateSubject(event.tags, event.title);
+
+    const user: User = await getCurrentUser(account);
+    const timeZone =  findIana(user.mailboxSettings?.timeZone || 'UTC')[0].valueOf()
+
+    // 2022-07-30T12:51  ~~  2022-07-30T16:14  ||||  UTC
+    
+    const eventAPI: Event = {
+        subject: subject,
+        start: {
+            dateTime: timeForCreationEvent(date, event.timeStart),
+            timeZone: timeZone
+        },
+        end:{
+            dateTime: timeForCreationEvent(date, event.timeEnd),
+            timeZone: timeZone
+        },
+    }
+    createEvent(authProvider, eventAPI);
+    console.log("new event from ", user.displayName)
+
+}
+    
 
 // this function returns beginning of weekend
 export function getCurrentWeekStart(): Date{    
