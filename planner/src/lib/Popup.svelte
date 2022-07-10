@@ -11,7 +11,7 @@
 		date = new Date(event.detail.date);
 		calendarEvent.timeStart = event.detail.timeStart;
 		calendarEvent.timeEnd = event.detail.timeEnd;
-		// console.log(calendarEvent, date);
+		console.log(calendarEvent, date);
 		console.log('date and time added');
 	}
 	function changeTags(event: any) {

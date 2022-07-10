@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { CalendarEvent } from '../internal/event';
 	import TableDateElement from '$lib/TableDateElement.svelte';
-	import {eventDelete} from "../internal/out"
+	import { eventDelete } from '../internal/out';
 	export let firstDay: Date; // first day of the week that showed
 	export let lastDay: Date; // last day of the week that showed
 	export let eventDays: {
@@ -9,15 +9,18 @@
 		events: CalendarEvent[];
 	}[];
 
-	async function deleteEvent(id: string){
+	async function deleteEvent(id: string) {
 		console.log(id);
-		let item1 = localStorage.getItem("currentAccount")
-    	const curAccount = JSON.parse(item1!);
-		await eventDelete(curAccount, id)
-			.then(() => {
-				window.location.reload();
-			})
-	}	
+		let item1 = localStorage.getItem('currentAccount');
+		const curAccount = JSON.parse(item1!);
+		await eventDelete(curAccount, id).then(() => {
+			eventDays.forEach((elem) => {
+				elem.events = elem.events.filter((element) => element.id !== id);
+			});
+			eventDays = eventDays.filter((elem) => elem.events.length!=0);
+			eventDays = eventDays;
+		});
+	}
 </script>
 
 <main>
@@ -45,7 +48,12 @@
 										{eventTag}
 									</div>
 								{/each}
-								<div class="close" on:click={() => {deleteEvent(event.id)}}>
+								<div
+									class="close"
+									on:click={() => {
+										deleteEvent(event.id);
+									}}
+								>
 									<img
 										class="cross"
 										src="https://cdn-icons-png.flaticon.com/128/966/966615.png"
