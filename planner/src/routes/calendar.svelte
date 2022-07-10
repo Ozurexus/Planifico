@@ -4,7 +4,7 @@
 	import type {CalendarEvent} from '../internal/event';
 	import {getCurrentCalendar, newEventCalendar} from "../internal/out"
 	import { onMount } from 'svelte';
-	import type {eventDays} from "../internal/calendar"
+	//import type {eventDays} from "../internal/calendar"
 
 	$: shown = false;
 	let today: Date = new Date();
@@ -14,7 +14,7 @@
 	let lastDayStr: string = dateToString(lastDay);
 
 
-	let eventDays: eventDays[] = [];
+	$: eventDays = [];
 	onMount (async () => {
 		let item1 = localStorage.getItem("currentAccount")
     	const curAccount = JSON.parse(item1!);
@@ -38,6 +38,7 @@
 		await getCurrentCalendar(curAccount)
 			.then((value) => {
 				eventDays = [...value];
+				eventDays = eventDays;
 			})
 		
 		console.log(eventDays);
