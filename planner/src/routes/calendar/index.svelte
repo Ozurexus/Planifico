@@ -2,7 +2,7 @@
 	import Popup from '$lib/Popup.svelte';
 	import EventDay from '$lib/eventDay.svelte';
 	import { CalendarEvent } from '$lib/event';
-	
+
 	$: shown = false;
 	let today: Date = new Date();
 	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
@@ -46,20 +46,22 @@
 
 	function addNewEvent(event: CustomEvent) {
 		shown = false;
-		let date:Date = new Date(event.detail.date);
+		let date: Date = new Date(event.detail.date);
 		let calendarEvent: CalendarEvent = event.detail.calendarEvent;
-		let was:boolean = false;
-		eventDays.forEach((obj) => {
-			console.log(obj.date.getTime(), date.getTime())
-			if(obj.date.getTime() === date.getTime()){
+		let was: boolean = false;
+		eventDays.forEach((obj: any) => {
+			// console.log(obj.date.getTime(), date.getTime())
+			if (obj.date.getTime() === date.getTime()) {
 				obj.events = [...obj.events, calendarEvent];
 				was = true;
 			}
-		})
-		if(!was)
-			eventDays = [...eventDays, {date:date, events:[calendarEvent]}];
+		});
+		if (!was) eventDays = [...eventDays, { date: date, events: [calendarEvent] }];
+		console.log(eventDays);
 
-		eventDays=eventDays;
+		eventDays.sort((a:any, b:any) => a.date.getTime()-b.date.getTime());
+
+		eventDays = eventDays;
 		console.log(eventDays);
 		console.log('new event added');
 	}
@@ -70,8 +72,6 @@
 		dateStr = listDate[1] + ' ' + listDate[2] + ', ' + listDate[3];
 		return dateStr;
 	}
-	
-	
 </script>
 
 <main>
@@ -125,7 +125,7 @@
 		margin-top: 7px;
 		margin-bottom: 10px;
 	}
-	.event-button:hover{
+	.event-button:hover {
 		background-color: #605edc;
 	}
 	.plus-image {
