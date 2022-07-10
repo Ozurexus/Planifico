@@ -41,6 +41,18 @@
 					'subtitles'
 				])
 			]
+		},
+		{
+			date: firstDay,
+			events: [
+				new CalendarEvent('Cinema', '10:00 AM','11:30 AM', [
+					'chill',
+					'beer',
+					'chips',
+					'popcorn',
+					'subtitles'
+				])
+			]
 		}
 	];
 
@@ -89,7 +101,7 @@
 		{/if}
 	</div>
 	<div class="container">
-		<EventDay {eventDays} />
+		<EventDay {eventDays} {firstDay} {lastDay}/>
 	</div>
 </main>
 
