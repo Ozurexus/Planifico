@@ -37,11 +37,9 @@
 		await newEventCalendar(curAccount, date, calendarEvent)
 		await getCurrentCalendar(curAccount)
 			.then((value) => {
-				eventDays = value;
+				eventDays = [...value];
 			})
 		
-		window.location.reload();
-
 		console.log(eventDays);
 		console.log('new event added');
 	}

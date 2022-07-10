@@ -74,6 +74,7 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
         }
         result.push(new eventDays(prevDate, prev));
     }
+    console.log(result);
     return result;
 }
 
