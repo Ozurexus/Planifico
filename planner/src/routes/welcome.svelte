@@ -2,7 +2,7 @@
     import type { Client } from "@microsoft/microsoft-graph-client";
     import ButtonSignOut from "../lib/ButtonSignOut.svelte";
     import {isAuth} from "../internal/middleware"
-    import {getCurrentCalendar, getCurrentWeekStart, getCurrentWeekEnd} from "../internal/out";
+    import {getCurrentCalendar} from "../internal/out";
 
     // это проверка, что юзер зашел!!!
     import { onMount } from "svelte";
@@ -12,25 +12,15 @@
         }
     })
 
-    async function getUser(){
+    async function getCalendar(){
         let item1 = localStorage.getItem("currentAccount")
         const curAccount = JSON.parse(item1!);
-        const user = await getCurrentCalendar(curAccount)
-        console.log(user);
-    }
-
-    
-
-    async function getWeekStartEnd(){
-        const start = getCurrentWeekStart();
-        const end = getCurrentWeekEnd(start);
-
-        console.log(start, end);
+        const events = await getCurrentCalendar(curAccount);
     }
 </script>
 
 <div>
-    <button on:click={getWeekStartEnd}>
+    <button on:click={getCalendar}>
         get week Start And End
         <slot/>
     </button>

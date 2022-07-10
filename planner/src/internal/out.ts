@@ -7,7 +7,6 @@ import type { Configuration } from "msal";
 import { findIana } from 'windows-iana';
 import type {AuthProvider } from "@microsoft/microsoft-graph-client";
 import type {Client} from '@microsoft/microsoft-graph-client';
-import {PublicClientApplication} from "@azure/msal-browser";
 import {InteractionType} from "@azure/msal-browser";
 import type { User, Event, Calendar } from 'microsoft-graph';
 import {TokenCredentialAuthenticationProvider} from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials"
@@ -19,6 +18,7 @@ import { msalInstance } from "./authService";
 
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { add, format, getDay, parseISO } from 'date-fns';
+import {formatDateTime} from "./DayEvents"
 
 
 // return user that has signed in
@@ -44,7 +44,10 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<Event[]>
     const user: User = await getCurrentUser(account);
     const ianaTimeZones = findIana(user.mailboxSettings?.timeZone || 'UTC');
     const events: Event[] = await getUserWeekCalendar(authProvider, ianaTimeZones[0].valueOf());
-    console.log(events);
+    
+    events.forEach(event => {
+        console.log(event.start?.dateTime, " - ", event.end?.dateTime, event.subject, event.organizer!.emailAddress);
+    });
     return events;
 }
 
