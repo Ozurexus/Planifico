@@ -4,15 +4,18 @@
 	export let id: string;
 	export let title: string;
 	export let completed: boolean;
+	export let BDID: string;
 	const dispatcher = createEventDispatcher();
 	function toggleComplete() {
 		dispatcher('toggleComplete', {
-			id: id
+			id: id,
+			BDID: BDID
 		});
 	}
 	function deleteTodo() {
 		dispatcher('deleteTodo', {
-			id: id
+			id: id,
+			BDID: BDID
 		});
 	}
 </script>

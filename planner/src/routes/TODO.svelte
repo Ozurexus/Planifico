@@ -1,46 +1,59 @@
 <script lang="ts">
 	import TodoItem from '$lib/TodoItem.svelte';
 	import { db } from '$lib/Firebase';
-	import {
-		getFirestore,
-		collection,
-		onSnapshot,
-		doc,
-		addDoc,
-		updateDoc,
-		deleteDoc,
-		orderBy,
-		query
-	} from 'firebase/firestore';
+	import { collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 	let newTodoTitle: string = '';
 	let CurrentSort: string = 'all';
 	type todo = {
 		id: string;
 		title: string;
 		completed: boolean;
+		BDID: string;
 	};
 	let ToDoList: todo[] = [];
-	let todosCol = collection(db, 'ToDo');
+
+	async function Fetcher() {
+		const q = collection(db, 'ToDo');
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((DOC) => {
+			const data = DOC.data();
+			const todo = {
+				id: data.id,
+				completed: data.completed,
+				title: data.title,
+				BDID: DOC.id
+			};
+			Show(todo);
+		});
+	}
+	async function Show(DOC: todo) {
+		ToDoList = [
+			...ToDoList,
+			{
+				id: DOC.id,
+				completed: DOC.completed,
+				title: DOC.title,
+				BDID: DOC.BDID
+			}
+		];
+	}
+	Fetcher();
 	async function addTodo(event: KeyboardEvent) {
 		if (newTodoTitle === ' ') {
 			newTodoTitle = '';
 		}
 		if (event.key === 'Enter' && newTodoTitle != '' && newTodoTitle.length > 1) {
 			let date: string = String(Date.now());
-			ToDoList = [
-				...ToDoList,
-				{
-					id: date,
-					completed: false,
-					title: newTodoTitle
-				}
-			];
-			const todo = {
-				TaskID: date,
-				complete: false,
-				TaskName: newTodoTitle
+			let todo = {
+				id: date,
+				completed: false,
+				title: newTodoTitle,
+				BDID: ''
 			};
-			await addDoc(collection(db, 'ToDo'), todo);
+			await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
+				todo.BDID = docref.id;
+				Show(todo);
+			});
 			newTodoTitle = '';
 		}
 	}
@@ -52,28 +65,35 @@
 			? ToDoList.filter((todo) => todo.completed)
 			: ToDoList.filter((todo) => !todo.completed);
 	function checkAllToDoList(event: any) {
-		ToDoList.forEach((todo) => (todo.completed = event.target.checked));
+		ToDoList.forEach((todo) => setCompleteness(todo, event.srcElement.checked));
 		ToDoList = ToDoList;
 	}
-
-	async function handleDeleteTodo(event: any) {
-		await deleteDoc(doc(db, 'ToDo', String(event.detail.id)));
-		console.log(String(event.detail.id));
+	async function handleDeleteTodo(event: CustomEvent) {
+		await deleteDoc(doc(db, 'ToDo', event.detail.BDID));
 		ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
 	}
 	function updateFilter(newFilter: string) {
 		CurrentSort = newFilter;
 	}
 	function clearCompleted() {
+		const Deleter = ToDoList.filter((todo) => todo.completed);
 		ToDoList = ToDoList.filter((todo) => !todo.completed);
+		Deleter.forEach((todo) => deleteDoc(doc(db, 'ToDo', todo.BDID)));
 	}
 	async function handleToggleComplete(event: any) {
-		const docRef = doc(db, 'ToDo', event.detail.id);
-		await updateDoc(docRef, {
-			Complete: !event.detail.completed
+		await updateDoc(doc(db, 'ToDo', event.detail.BDID), {
+			completed: !event.detail.completed
 		});
 		const todoIndex = ToDoList.findIndex((todo) => todo.id === event.detail.id);
 		const updatedTodo = { ...ToDoList[todoIndex], completed: !ToDoList[todoIndex].completed };
+		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
+	}
+	async function setCompleteness(tododo: todo, state: boolean) {
+		await updateDoc(doc(db, 'ToDo', tododo.BDID), {
+			completed: state
+		});
+		const todoIndex = ToDoList.findIndex((todo) => todo.id === tododo.id);
+		const updatedTodo = { ...ToDoList[todoIndex], completed: state };
 		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
 	}
 </script>
@@ -175,7 +195,7 @@
 	}
 
 	::-webkit-scrollbar-track {
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
 		border-radius: 10px;
 		background-color: #ffffff;
 	}
