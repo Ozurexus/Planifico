@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { scale } from 'svelte/transition';
-	export let id: number;
+	export let id: string;
 	export let title: string;
 	export let completed: boolean;
 	const dispatcher = createEventDispatcher();
@@ -32,8 +32,7 @@
 </div>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
 	.todo-item {
 		margin-bottom: 20px;
@@ -73,7 +72,6 @@
 		color: rgba(255, 255, 255, 1);
 		font-family: 'Lato';
 		font-size: 24px;
-
 	}
 	.completed {
 		text-decoration: line-through;
