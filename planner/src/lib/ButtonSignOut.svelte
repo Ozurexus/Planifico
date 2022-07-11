@@ -1,8 +1,9 @@
 <script lang='ts'>
-    import { getCurrentUser } from "../internal/out";
+    import { getCurrentUser, signOutCurrent} from "../internal/out";
 
 
     export const signOut = async () => {
+        await signOutCurrent()
         let item = localStorage.getItem("authorized")
         if (item === null){
             console.log("invalid log out")
