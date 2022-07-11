@@ -56,7 +56,7 @@
 
         localStorage.setItem("authorized", "true")
         localStorage.setItem("msalInstance", JSON.stringify(msalInstance))
-        localStorage.setItem("currentAccount", JSON.stringify(currentAccount))
+        localStorage.setItem("currentAccount", JSON.stringify(user))
     }
 </script>
 

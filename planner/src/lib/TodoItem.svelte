@@ -5,6 +5,7 @@
 	export let title: string;
 	export let completed: boolean;
 	export let BDID: string;
+	export let mail: string;
 	const dispatcher = createEventDispatcher();
 	function toggleComplete() {
 		dispatcher('toggleComplete', {

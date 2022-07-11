@@ -1,21 +1,37 @@
 <script lang="ts">
+	let mail: string = '';
 	// это проверка, что юзер зашел!!!
-    import { onMount } from "svelte";
-	import {isAuth} from "../internal/middleware"
-    onMount(() => {
-		if (!isAuth()){
-			location.replace("http://localhost:3000")
+	import { onMount } from 'svelte';
+	import { isAuth } from '../internal/middleware';
+	onMount(() => {
+		if (!isAuth()) {
+			location.replace('http://localhost:3000');
+		} else {
+			let user = localStorage.getItem('currentAccount');
+			if (user == null) {
+				user = '';
+			}
+			mail = JSON.parse(user).userPrincipalName;
+			Fetcher();
 		}
-    })
-	
+	});
 	import TodoItem from '../lib/TodoItem.svelte';
-	
-	import { db } from '$lib/Firebase';
-	import { collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
+	import { db } from '../internal/Firebase';
+	import {
+		collection,
+		doc,
+		addDoc,
+		updateDoc,
+		deleteDoc,
+		getDocs,
+		where,
+		query
+	} from 'firebase/firestore';
 	let newTodoTitle: string = '';
 	let CurrentSort: string = 'all';
 	type todo = {
 		id: string;
+		mail: string;
 		title: string;
 		completed: boolean;
 		BDID: string;
@@ -23,12 +39,13 @@
 	let ToDoList: todo[] = [];
 
 	async function Fetcher() {
-		const q = collection(db, 'ToDo');
+		const q = query(collection(db, 'ToDo'), where('mail', '==', mail));
 		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((DOC) => {
 			const data = DOC.data();
 			const todo = {
 				id: data.id,
+				mail: mail,
 				completed: data.completed,
 				title: data.title,
 				BDID: DOC.id
@@ -41,13 +58,14 @@
 			...ToDoList,
 			{
 				id: DOC.id,
+				mail: mail,
 				completed: DOC.completed,
 				title: DOC.title,
 				BDID: DOC.BDID
 			}
 		];
 	}
-	Fetcher();
+
 	async function addTodo(event: KeyboardEvent) {
 		if (newTodoTitle === ' ') {
 			newTodoTitle = '';
@@ -56,6 +74,7 @@
 			let date: string = String(Date.now());
 			let todo = {
 				id: date,
+				mail: mail,
 				completed: false,
 				title: newTodoTitle,
 				BDID: ''
