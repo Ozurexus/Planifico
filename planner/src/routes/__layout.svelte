@@ -1,11 +1,21 @@
 <script lang="ts">
 	import '../styles/global.css';
+	import {isAuth} from "../internal/middleware"
+
 	let activeElem: string = 'home';
-	let items: { href: string; name: string; id: number }[] = [
-		{ href: '', name: 'home', id: 0 },
+	import { onMount } from "svelte";
+	let items: { href: string; name: string; id: number }[] = [{ href: '', name: '  ', id: 0}];
+	let authorized: boolean = false;
+    onMount(async () => {
+        if (isAuth()){
+            items = [{ href: '', name: 'home', id: 0 },
 		{ href: 'calendar', name: 'calendar', id: 2 },
-		{ href: 'TODO', name: 'To-do list', id: 1 },
-	];
+		{ href: 'todo', name: 'To-do list', id: 1 },]
+        }else{
+			items = [{ href: '', name: 'home', id: 0 }]
+		}
+    })
+	
 </script>
 
 <main>

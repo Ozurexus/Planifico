@@ -1,11 +1,27 @@
 <script lang="ts">
-	import type { CalendarEvent } from '$lib/event';
+	import type { CalendarEvent } from '../internal/event';
 	import TableDateElement from '$lib/TableDateElement.svelte';
-
+	import { eventDelete } from '../internal/out';
+	let today: Date = new Date("2022-07-12");
+	export let firstDay: Date; // first day of the week that showed
+	export let lastDay: Date; // last day of the week that showed
 	export let eventDays: {
 		date: Date;
 		events: CalendarEvent[];
 	}[];
+
+	async function deleteEvent(id: string) {
+		console.log(id);
+		let item1 = localStorage.getItem('currentAccount');
+		const curAccount = JSON.parse(item1!);
+		await eventDelete(curAccount, id).then(() => {
+			eventDays.forEach((elem) => {
+				elem.events = elem.events.filter((element) => element.id !== id);
+			});
+			eventDays = eventDays.filter((elem) => elem.events.length!=0);
+			eventDays = eventDays;
+		});
+	}
 </script>
 
 <main>
@@ -16,45 +32,56 @@
 			<div>Event</div>
 		</div>
 		{#each eventDays as eventDay, id}
-			<div class="background-day">
-				<div class="eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
-					<TableDateElement date={eventDay.date} />
-				</div>
-				{#each eventDay.events as event, id}
-					<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>
-						<div class="eventTimeContent">{event.timeStart} - {event.timeEnd}</div>
+			{#if firstDay.getTime() <= eventDay.date.getTime() && eventDay.date.getTime() <= lastDay.getTime()}
+				<div class={eventDay.date.getTime()< today.getTime() ? "background-passed-day" : "background-day" }>
+					<div class= "eventsDate" style="grid-row: 1/{eventDay.events.length + 1}">
+						<TableDateElement date={eventDay.date} passedStyle={eventDay.date.getTime()< today.getTime()}/>
 					</div>
-					<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
-						<div class="eventTitle">{event.title}</div>
-						<div class="eventTags">
-							{#each event.tags as eventTag}
-								<div class="eventTag">
-									{eventTag}
-								</div>
-							{/each}
-							<div class="close" on:click={()=>{}}>
-								<img
-								class="cross"
-								src="https://w7.pngwing.com/pngs/280/932/png-transparent-computer-icons-compass-north-close-angle-technic-compass-thumbnail.png"
-								alt=""
-							/></div>
+					{#each eventDay.events as event, id}
+						<div class={id != 0 ? 'eventTime' : 'firstEventTime'}>
+							<div class="eventTimeContent">{event.timeStart} - {event.timeEnd}</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+						<div class={id != 0 ? 'eventTitleAndTags' : 'firstEventTitleAndTags'}>
+							<div class="eventTitle">{event.title}</div>
+							<div class="eventTags">
+								{#each event.tags as eventTag}
+									<div class="eventTag">
+										{eventTag}
+									</div>
+								{/each}
+								<div
+									class="close"
+									on:click={() => {
+										deleteEvent(event.id);
+									}}
+								>
+									<img
+										class="cross"
+										src="https://cdn-icons-png.flaticon.com/128/966/966615.png"
+										alt=""
+									/>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{/if}
 		{/each}
 	</div>
 </main>
 
 <style>
 	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
-	.close{
+	.close {
 		display: flex;
 		align-self: center;
+		cursor: pointer;
 	}
 	.cross {
-		height: 40px;
-		width: 40px;
+		height: 22px;
+		width: 22px;
+		margin-left: 10px;
+		margin-right: 15px;
 	}
 	.table {
 		display: grid;
@@ -74,6 +101,17 @@
 		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
 		font-size: 40px;
 		padding-bottom: 20px;
+	}
+	.background-passed-day{
+		background-color: rgb(240,240,240);
+		display: grid;
+		grid-template-columns: minmax(120px, 15%) minmax(270px, 20%) minmax(300px, 65%);
+		font-size: 23px;
+
+		border-top: 3px solid #dfdfdf;
+	}
+	.background-passed-day div{
+		background-color: rgb(240,240,240);
 	}
 	.background-day {
 		background-color: white;

@@ -1,5 +1,15 @@
 <script lang="ts">
-	import TodoItem from '$lib/TodoItem.svelte';
+	// это проверка, что юзер зашел!!!
+    import { onMount } from "svelte";
+	import {isAuth} from "../internal/middleware"
+    onMount(() => {
+		if (!isAuth()){
+			location.replace("http://localhost:3000")
+		}
+    })
+	
+	import TodoItem from '../lib/TodoItem.svelte';
+	
 	import { db } from '$lib/Firebase';
 	import { collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 	let newTodoTitle: string = '';
