@@ -18,7 +18,7 @@ import { msalInstance } from "./authService";
 
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { add, format, getDay, parseISO } from 'date-fns';
-import {dateEqualsByDay, eventDays, generateSubject, parseEventTags, parseEventText, timeForCreationEvent} from "./calendar";
+import {dateEqualsByDay, eventDays, generateSubject, parseEventTags, parseEventText, parseTimehhmm, timeForCreationEvent} from "./calendar";
 import { CalendarEvent } from "./event";
 
 
@@ -51,17 +51,17 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
     const result: eventDays[] = [];
     let prev: CalendarEvent[] = [];
     
+
     let i = 0;
     while (i < events.length){
         let curDate = new Date(events[i].start!.dateTime!);
         const prevDate = new Date(events[i].start!.dateTime!);
 
         prev = [];
-
         while (i < events.length && dateEqualsByDay(prevDate, curDate)){
             curDate = new Date(events[i].start!.dateTime!);
-            const start = format(parseISO(events[i].start!.dateTime!), "hh:mm");
-            const end = format(parseISO(events[i].end!.dateTime!), "hh:mm");
+            const start = parseTimehhmm(events[i].start!.dateTime!);
+            const end = parseTimehhmm(events[i].end!.dateTime!);
             const title: string = parseEventText(events[i].subject!);
             const tags: string[] = parseEventTags(events[i].subject!);
             const id: string = events[i].id!; 
@@ -74,7 +74,6 @@ export async function getCurrentCalendar(account: AccountInfo): Promise<eventDay
         }
         result.push(new eventDays(prevDate, prev));
     }
-    console.log(result);
     return result;
 }
 

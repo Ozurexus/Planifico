@@ -20,14 +20,6 @@
         
         const events = await getCurrentCalendar(curAccount);
     }
-    async function newEvent(){
-        let item1 = localStorage.getItem("currentAccount")
-        const curAccount = JSON.parse(item1!);
-        const date = new Date('December 12, 2022 03:24:00');
-        const ce = new CalendarEvent("event from app", "12:20", "16:40", ["tag1", "tag2"]);
-        const events = await newEventCalendar(curAccount, date, ce);
-        console.log("OK")
-    }
 </script>
 
 <h1 class="welcome-text">

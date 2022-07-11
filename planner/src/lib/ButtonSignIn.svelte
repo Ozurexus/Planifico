@@ -54,7 +54,7 @@
         
         console.log("set auth vars")
 
-        localStorage.setItem("authorized", JSON.stringify(true))
+        localStorage.setItem("authorized", "true")
         localStorage.setItem("msalInstance", JSON.stringify(msalInstance))
         localStorage.setItem("currentAccount", JSON.stringify(currentAccount))
     }
