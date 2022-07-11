@@ -1,46 +1,44 @@
 <script lang="ts">
 	import Popup from '$lib/Popup.svelte';
 	import EventDay from '$lib/eventDay.svelte';
-	import type {CalendarEvent} from '../internal/event';
-	import {getCurrentCalendar, newEventCalendar} from "../internal/out"
+	import type { CalendarEvent } from '../internal/event';
+	import { getCurrentCalendar, newEventCalendar } from '../internal/out';
 	import { onMount } from 'svelte';
 	//import type {eventDays} from "../internal/calendar"
 
 	$: shown = false;
 	let today: Date = new Date();
 	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+	firstDay.setHours(0);
 	let lastDay: Date = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-	let firstDayStr: string = dateToString(firstDay);
-	let lastDayStr: string = dateToString(lastDay);
-
+	$: firstDayStr = dateToString(firstDay);
+	$: lastDayStr = dateToString(lastDay);
+	let weekCofficient: number = 0;
 
 	$: eventDays = [];
-	onMount (async () => {
-		let item1 = localStorage.getItem("currentAccount")
-    	const curAccount = JSON.parse(item1!);
-		await getCurrentCalendar(curAccount)
-		.then((value) => {
+	onMount(async () => {
+		let item1 = localStorage.getItem('currentAccount');
+		const curAccount = JSON.parse(item1!);
+		await getCurrentCalendar(curAccount).then((value) => {
 			eventDays = value;
-		})
-	})
-	
+		});
+	});
 
-	async function addNewEvent(event: CustomEvent){
+	async function addNewEvent(event: CustomEvent) {
 		shown = false;
 		let date: Date = new Date(event.detail.date);
 		let calendarEvent: CalendarEvent = event.detail.calendarEvent;
 
-		let item1 = localStorage.getItem("currentAccount")
+		let item1 = localStorage.getItem('currentAccount');
 		const curAccount = JSON.parse(item1!);
 		console.log(event.detail.calendarEvent);
-		
-		await newEventCalendar(curAccount, date, calendarEvent)
-		await getCurrentCalendar(curAccount)
-			.then((value) => {
-				eventDays = [...value];
-				eventDays = eventDays;
-			})
-		
+
+		await newEventCalendar(curAccount, date, calendarEvent);
+		await getCurrentCalendar(curAccount).then((value) => {
+			eventDays = [...value];
+			eventDays = eventDays;
+		});
+
 		console.log(eventDays);
 		console.log('new event added');
 	}
@@ -67,9 +65,10 @@
 			<Popup on:send={addNewEvent} on:close={() => (shown = false)} />
 		{/if}
 	</div>
-	<div class="container">
-		<EventDay {eventDays} {firstDay} {lastDay}/>
-	</div>
+	<EventDay {firstDay} {lastDay} {eventDays} on:changeWeek={(event) =>{
+		firstDay = event.detail.firstDay
+		lastDay = event.detail.lastDay
+	}}/>
 </main>
 
 <style>
