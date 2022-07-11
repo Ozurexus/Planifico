@@ -60,10 +60,47 @@
     }
 </script>
 
-<style>
-    
-</style>
-
-<button on:click={signIn}>
-    <slot/>
+<button class="signin" on:click={signIn}>
+    <div class="text">
+        <slot/>
+    </div>
+    <img src="out.png" alt="outlook" class="image-out">
 </button>
+
+<style>
+    .signin{
+        margin-top: -20px;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        cursor: pointer;
+        border-radius: 34px;
+        height: 68px;
+        width: 280px;
+        box-shadow: 0px 4px 4px #00000040;
+        outline: none;
+        background-color: white;
+        border: 0;
+        color: rgba(109, 106, 247, 1);
+        font-family: 'Lato';
+        font-size: 35px;
+        font-weight: 600;
+        display: flex;
+    }
+
+    .signin:hover{
+		background-color: #e2e2e2;
+    }
+
+    .image-out{
+        margin-left: auto;
+        margin-right: 10px;
+        height: 75px;
+        margin-top: -5px;
+    }
+    .text{
+        margin-top: 10px;
+        margin-left: 42px;
+        margin-right: auto;
+    }
+</style>
