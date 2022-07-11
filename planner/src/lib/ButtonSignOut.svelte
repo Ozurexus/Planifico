@@ -28,6 +28,7 @@
         color: pink;
     }
     .signout-button{
+        cursor: pointer;
         color: white;
         background-color: transparent;
         border: none;
