@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import type {eventDays} from "../internal/calendar"
 	import { isAuth } from '../internal/middleware';
-
+	import {routes} from "../internal/config"
 	
 	$: shown = false;
 	let today: Date = new Date();
@@ -19,7 +19,7 @@
 	// это проверка, что юзер зашел!!!
     onMount(() => {
         if (!isAuth()){
-            location.replace("http://localhost:3000")
+            location.replace(routes.basePage)
         }
     })
 

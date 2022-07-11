@@ -4,13 +4,12 @@
     import {isAuth} from "../internal/middleware"
     import {getCurrentCalendar, newEventCalendar} from "../internal/out";
     import { CalendarEvent } from "../internal/event";
-
-
-    // это проверка, что юзер зашел!!!
     import { onMount } from "svelte";
+    import {routes} from "../internal/config"
+
     onMount(() => {
         if (!isAuth()){
-            location.replace("http://localhost:3000")
+            location.replace(routes.basePage)
         }
     })
 

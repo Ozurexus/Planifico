@@ -3,11 +3,13 @@
 	// это проверка, что юзер зашел!!!
 	import { onMount } from 'svelte';
 	import { isAuth } from '../internal/middleware';
+	import {routes} from "../internal/config"
+	
 	onMount(() => {
 		if (!isAuth()) {
-			location.replace('http://localhost:3000');
-		} else {
-			let user = localStorage.getItem('currentAccount');
+			location.replace(routes.basePage);
+		}else {
+			let user = localStorage.getItem('user');
 			if (user == null) {
 				user = '';
 			}

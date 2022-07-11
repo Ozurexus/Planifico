@@ -1,12 +1,12 @@
 <script>
     import ButtonSignIn from "../lib/ButtonSignIn.svelte"
     import {isAuth} from "../internal/middleware"
-
-    // это проверка, что юзер зашел!!!
+    import {routes} from "../internal/config"
     import { onMount } from "svelte";
+
     onMount(() => {
         if (isAuth()){
-            location.replace("http://localhost:3000/welcome")
+            location.replace(routes.welcomePage);
         }
     })
 </script>
