@@ -4,7 +4,10 @@
 	import type { CalendarEvent } from '../internal/event';
 	import { getCurrentCalendar, newEventCalendar } from '../internal/out';
 	import { onMount } from 'svelte';
-	//import type {eventDays} from "../internal/calendar"
+
+	import type { eventDays } from '../internal/calendar';
+	import { isAuth } from '../internal/middleware';
+	import { routes } from '../internal/config';
 
 	$: shown = false;
 	let today: Date = new Date();
@@ -14,7 +17,12 @@
 	$: firstDayStr = dateToString(firstDay);
 	$: lastDayStr = dateToString(lastDay);
 	let weekCofficient: number = 0;
-
+	// это проверка, что юзер зашел!!!
+	onMount(() => {
+		if (!isAuth()) {
+			location.replace(routes.basePage);
+		}
+	});
 	$: eventDays = [];
 	onMount(async () => {
 		let item1 = localStorage.getItem('currentAccount');
@@ -65,10 +73,15 @@
 			<Popup on:send={addNewEvent} on:close={() => (shown = false)} />
 		{/if}
 	</div>
-	<EventDay {firstDay} {lastDay} {eventDays} on:changeWeek={(event) =>{
-		firstDay = event.detail.firstDay
-		lastDay = event.detail.lastDay
-	}}/>
+	<EventDay
+		{firstDay}
+		{lastDay}
+		{eventDays}
+		on:changeWeek={(event) => {
+			firstDay = event.detail.firstDay;
+			lastDay = event.detail.lastDay;
+		}}
+	/>
 </main>
 
 <style>

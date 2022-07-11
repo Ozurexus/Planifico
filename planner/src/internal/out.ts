@@ -14,7 +14,7 @@ import { ms } from "date-fns/locale";
 import {AuthCodeMSALBrowserAuthenticationProvider, type AuthCodeMSALBrowserAuthenticationProviderOptions}  from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import { ClientSecretCredential } from "@azure/identity";
 import type { AccountInfo } from "@azure/msal-browser";
-import { msalInstance } from "./authService";
+import { msalInstance, signOut } from "./authService";
 
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { add, format, getDay, parseISO } from 'date-fns';
@@ -118,6 +118,9 @@ export async function eventDelete(account: AccountInfo, eventID: string): Promis
     deleteEvent(authProvider, eventID);
     console.log("delete event")
 
+}
+export async function signOutCurrent(): Promise<void>{
+    await signOut();
 }
 
 // this function returns beginning of weekend

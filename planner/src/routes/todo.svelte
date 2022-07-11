@@ -1,37 +1,90 @@
 <script lang="ts">
+	let mail: string = '';
 	// это проверка, что юзер зашел!!!
-    import { onMount } from "svelte";
-	import {isAuth} from "../internal/middleware"
-    onMount(() => {
-		if (!isAuth()){
-			location.replace("http://localhost:3000")
-		}
-    })
+	import { onMount } from 'svelte';
+	import { isAuth } from '../internal/middleware';
+	import {routes} from "../internal/config"
 	
+	onMount(() => {
+		if (!isAuth()) {
+			location.replace(routes.basePage);
+		}else {
+			let user = localStorage.getItem('user');
+			if (user == null) {
+				user = '';
+			}
+			mail = JSON.parse(user).userPrincipalName;
+			Fetcher();
+		}
+	});
 	import TodoItem from '../lib/TodoItem.svelte';
+	import { db } from '../internal/Firebase';
+	import {
+		collection,
+		doc,
+		addDoc,
+		updateDoc,
+		deleteDoc,
+		getDocs,
+		where,
+		query
+	} from 'firebase/firestore';
 	let newTodoTitle: string = '';
 	let CurrentSort: string = 'all';
-	let nextId: number = 1;
 	type todo = {
-		id: number;
+		id: string;
+		mail: string;
 		title: string;
 		completed: boolean;
+		BDID: string;
 	};
 	let ToDoList: todo[] = [];
-	function addTodo(event: KeyboardEvent) {
+
+	async function Fetcher() {
+		const q = query(collection(db, 'ToDo'), where('mail', '==', mail));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((DOC) => {
+			const data = DOC.data();
+			const todo = {
+				id: data.id,
+				mail: mail,
+				completed: data.completed,
+				title: data.title,
+				BDID: DOC.id
+			};
+			Show(todo);
+		});
+	}
+	async function Show(DOC: todo) {
+		ToDoList = [
+			...ToDoList,
+			{
+				id: DOC.id,
+				mail: mail,
+				completed: DOC.completed,
+				title: DOC.title,
+				BDID: DOC.BDID
+			}
+		];
+	}
+
+	async function addTodo(event: KeyboardEvent) {
 		if (newTodoTitle === ' ') {
 			newTodoTitle = '';
 		}
 		if (event.key === 'Enter' && newTodoTitle != '' && newTodoTitle.length > 1) {
-			ToDoList = [
-				...ToDoList,
-				{
-					id: nextId,
-					completed: false,
-					title: newTodoTitle
-				}
-			];
-			nextId = nextId + 1;
+			let date: string = String(Date.now());
+			let todo = {
+				id: date,
+				mail: mail,
+				completed: false,
+				title: newTodoTitle,
+				BDID: ''
+			};
+			await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
+				todo.BDID = docref.id;
+				Show(todo);
+			});
 			newTodoTitle = '';
 		}
 	}
@@ -43,22 +96,35 @@
 			? ToDoList.filter((todo) => todo.completed)
 			: ToDoList.filter((todo) => !todo.completed);
 	function checkAllToDoList(event: any) {
-		ToDoList.forEach((todo) => (todo.completed = event.target.checked));
+		ToDoList.forEach((todo) => setCompleteness(todo, event.srcElement.checked));
 		ToDoList = ToDoList;
 	}
-
-	function handleDeleteTodo(event: CustomEvent) {
+	async function handleDeleteTodo(event: CustomEvent) {
+		await deleteDoc(doc(db, 'ToDo', event.detail.BDID));
 		ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
 	}
 	function updateFilter(newFilter: string) {
 		CurrentSort = newFilter;
 	}
 	function clearCompleted() {
+		const Deleter = ToDoList.filter((todo) => todo.completed);
 		ToDoList = ToDoList.filter((todo) => !todo.completed);
+		Deleter.forEach((todo) => deleteDoc(doc(db, 'ToDo', todo.BDID)));
 	}
-	function handleToggleComplete(event: CustomEvent) {
+	async function handleToggleComplete(event: any) {
+		await updateDoc(doc(db, 'ToDo', event.detail.BDID), {
+			completed: !event.detail.completed
+		});
 		const todoIndex = ToDoList.findIndex((todo) => todo.id === event.detail.id);
 		const updatedTodo = { ...ToDoList[todoIndex], completed: !ToDoList[todoIndex].completed };
+		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
+	}
+	async function setCompleteness(tododo: todo, state: boolean) {
+		await updateDoc(doc(db, 'ToDo', tododo.BDID), {
+			completed: state
+		});
+		const todoIndex = ToDoList.findIndex((todo) => todo.id === tododo.id);
+		const updatedTodo = { ...ToDoList[todoIndex], completed: state };
 		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
 	}
 </script>
@@ -80,9 +146,9 @@
 					on:deleteTodo={handleDeleteTodo}
 					on:toggleComplete={handleToggleComplete}
 				/>
-			</div>	
+			</div>
 		{/each}
-	</div>	
+	</div>
 
 	<div class="inner-container">
 		<div>
@@ -109,8 +175,7 @@
 </div>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
 	.container {
 		max-width: 80vw;
@@ -137,15 +202,15 @@
 	}
 
 	::placeholder {
-		color:    rgb(145, 143, 143);
+		color: rgb(145, 143, 143);
 		font-family: Lato;
 		font-weight: 600;
-	}	
+	}
 
-	.items-block{
-		width:103%;
-		height:300px;
-	
+	.items-block {
+		width: 103%;
+		height: 300px;
+
 		overflow: auto; /* свойство для прокрутки по горизонтали. Автоматом, если больше блока */
 		overflow-x: hidden;
 	}
@@ -157,17 +222,17 @@
 
 	::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background-color:rgba(109, 106, 247, 1);
+		background-color: rgba(109, 106, 247, 1);
 	}
 
 	::-webkit-scrollbar-track {
-		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
 		border-radius: 10px;
 		background-color: #ffffff;
 	}
 
 	.ToDoItem {
-		word-break:break-all;
+		word-break: break-all;
 	}
 
 	.inner-container {
