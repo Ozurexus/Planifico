@@ -10,13 +10,15 @@
 	function toggleComplete() {
 		dispatcher('toggleComplete', {
 			id: id,
-			BDID: BDID
+			BDID: BDID,
+			completed: completed
 		});
 	}
 	function deleteTodo() {
 		dispatcher('deleteTodo', {
 			id: id,
-			BDID: BDID
+			BDID: BDID,
+			completed: completed
 		});
 	}
 </script>

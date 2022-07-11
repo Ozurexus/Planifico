@@ -3,12 +3,12 @@
 	// это проверка, что юзер зашел!!!
 	import { onMount } from 'svelte';
 	import { isAuth } from '../internal/middleware';
-	import {routes} from "../internal/config"
-	
+	import { routes } from '../internal/config';
+
 	onMount(() => {
 		if (!isAuth()) {
 			location.replace(routes.basePage);
-		}else {
+		} else {
 			let user = localStorage.getItem('user');
 			if (user == null) {
 				user = '';
@@ -81,10 +81,12 @@
 				title: newTodoTitle,
 				BDID: ''
 			};
-			await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
-				todo.BDID = docref.id;
-				Show(todo);
-			});
+			if (mail != '') {
+				await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
+					todo.BDID = docref.id;
+					Show(todo);
+				});
+			}
 			newTodoTitle = '';
 		}
 	}
