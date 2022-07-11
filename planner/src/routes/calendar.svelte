@@ -5,7 +5,9 @@
 	import {getCurrentCalendar, newEventCalendar} from "../internal/out"
 	import { onMount } from 'svelte';
 	import type {eventDays} from "../internal/calendar"
+	import { isAuth } from '../internal/middleware';
 
+	
 	$: shown = false;
 	let today: Date = new Date();
 	let firstDay: Date = new Date(today.setDate(today.getDate() - today.getDay()));
@@ -13,6 +15,13 @@
 	let firstDayStr: string = dateToString(firstDay);
 	let lastDayStr: string = dateToString(lastDay);
 
+
+	// это проверка, что юзер зашел!!!
+    onMount(() => {
+        if (!isAuth()){
+            location.replace("http://localhost:3000")
+        }
+    })
 
 	let eventDays: eventDays[] = [];
 	onMount (async () => {

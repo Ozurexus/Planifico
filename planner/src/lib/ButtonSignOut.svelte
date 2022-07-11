@@ -12,9 +12,7 @@
         const curAccount = JSON.parse(item1!);
         const user = getCurrentUser(curAccount);
 
-        localStorage.setItem("msalInstance", "");
-        localStorage.setItem("currentAccount", "");
-        localStorage.setItem("authorized", "false")
+        localStorage.clear();
         console.log("user logged out in", user);
         location.replace("http://localhost:3000/")
     };   
