@@ -26,13 +26,13 @@
 
 <style>
     .signout-button:hover{
-        color: grey;
+        color: pink;
     }
     .signout-button{
         color: white;
         background-color: transparent;
         border: none;
-        font-size: 20px;
+        font-size: 19px;
         font-weight: 600;
     }
 </style>

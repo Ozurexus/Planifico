@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../styles/global.css';
+	import ButtonSignOut from "../lib/ButtonSignOut.svelte";
 	import {isAuth} from "../internal/middleware"
 
 	let activeElem: string = 'home';
@@ -12,7 +13,7 @@
 		{ href: 'calendar', name: 'calendar', id: 2 },
 		{ href: 'todo', name: 'To-do list', id: 1 },]
         }else{
-			items = [{ href: '', name: 'home', id: 0 }]
+			items = [{ href: '', name: 'PLANIFICO', id: 0 }]
 		}
     })
 	
@@ -31,6 +32,9 @@
 				<!-- Capitalize first letter -->
 			</a>
 		{/each}
+		<div class="signout">
+			<ButtonSignOut>Sign out</ButtonSignOut>
+		</div>
 	</div>
 
 	<slot />
@@ -39,6 +43,12 @@
 <style>
 	@import
 	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+
+	.signout{
+		margin-top: 13px;
+		margin-left: auto;
+		margin-right: 15px;
+    }
 
 	.topnav {
 		background-color: #6d6af7;

@@ -30,47 +30,43 @@
     }
 </script>
 
-<div class="signout">
-    <ButtonSignOut>Sign out</ButtonSignOut>
-</div>
-
 <h1 class="welcome-text">
     Welcome! <br/> Choose what you want to do:
 </h1>
 
-<div class="box-calendar">
-    <button class="button-calendar"> 
-        <a class="cal-text" href="/calendar">Use Online Calendar</a>
-    </button>
-    <br/>
-    <img src="/static/man.png" alt="man" class="image-man">
-    <ul class="cal-list">
-        <li>Organize your week plan to manage everything</li>
-        <li>Add and remove events with ease</li>
-        <li>Create custom-made tags</li>
-    </ul>
-</div>
+<div class="wrapper">
+    <div class="box-calendar">
+        <button class="button-calendar"> 
+            <a class="cal-text" href="/calendar">Use Online Calendar</a>
+        </button>
+        <br/>
+        <img src="/static/man.png" alt="man" class="image-man">
+        <ul class="cal-list">
+            <li>Organize your week plan</li>
+            <li>Add and remove events with ease</li>
+            <li>Create custom-made tags</li>
+        </ul>
+    </div>
 
-<div class="box-todo">
-    <button class="button-calendar"> 
-        <a class="cal-text" href="/todo">Use To-do List</a>
-    </button>
-    <br/>
-    <img src="/static/girl.png" alt="girl" class="image-girl">
-    <ul class="todo-list">
-        <li>Keep track of all chore</li>
-        <li>Add and remove tasks to the list</li>
-        <li>Check off tasks with a single click</li>
-    </ul>
-</div>
+    <div class="box-todo">
+        <button class="button-calendar"> 
+            <a class="cal-text" href="/todo">Use To-do List</a>
+        </button>
+        <br/>
+        <img src="/static/girl.png" alt="girl" class="image-girl">
+        <ul class="todo-list">
+            <li>Keep track of all chores</li>
+            <li>Add and remove tasks to the list</li>
+            <li>Check off tasks with a single click</li>
+        </ul>
+    </div>
+</div>    
 
 <style>
-    .signout{
-        margin-left: 93%;
-        background-color: transparent;
+    .wrapper{
+        display: flex;
     }
     .welcome-text{
-        margin-top: -5px            ;
         color: white;
         font-family: 'Lato';
         font-weight: 600;
@@ -119,8 +115,8 @@
         padding-bottom: 15px;
     }
     .box-todo{
-        margin-top: -459px;
-        margin-left: 55%;
+        margin-top: 30px;
+        margin-left: 10%;
         height: 40%;
         width: 35%;
         background-color: white;
