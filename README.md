@@ -2,7 +2,7 @@
 
 ### Run project
 ```
-    npm i && npm run dev
+    cd app && npm i && npm run dev
 ```
 
 ### Test project
