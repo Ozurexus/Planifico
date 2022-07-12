@@ -11,13 +11,13 @@
 			tags = [...tags, tagName];
 			tagName = '';
 		}
-		dispatch('change', {tags});
+		dispatch('change', { tags });
 	}
-    function removeTag(id:number){
-        tags.splice(id, 1);
-        tags = tags;
-		dispatch('change', {tags});
-    }
+	function removeTag(id: number) {
+		tags.splice(id, 1);
+		tags = tags;
+		dispatch('change', { tags });
+	}
 </script>
 
 <main>
@@ -26,8 +26,10 @@
 			<div class="tag">
 				<p>#{tag}</p>
 				<input
-					on:click={()=>{removeTag(id)}}
-                    id="remove-tag-btn"
+					on:click={() => {
+						removeTag(id);
+					}}
+					id="remove-tag-btn"
 					class="button"
 					type="image"
 					name="close_button"
@@ -36,7 +38,7 @@
 				/>
 			</div>
 		{/each}
-		<button id="add-tag-btn" class="button" on:click={()=> shown=!shown}> New tag + </button>
+		<button id="add-tag-btn" class="button" on:click={() => (shown = !shown)}> New tag + </button>
 	</div>
 	{#if shown}
 		<input
@@ -75,29 +77,29 @@
 		background-color: #6d6af7;
 		padding-inline: 10px;
 		color: white;
-        display: flex;
-        align-items: center;
+		display: flex;
+		align-items: center;
 	}
 	.button {
 		color: #6d6af7;
 		cursor: pointer;
 	}
-    #remove-tag-btn{
-        margin-left: 5px;
-        height: 15px;
-        width: 15px;
-    }
-	#add-tag-btn:hover{
-		background-color:rgb(230,230,230);
+	#remove-tag-btn {
+		margin-left: 5px;
+		height: 15px;
+		width: 15px;
 	}
-    #add-tag-btn{
-        height: 25px;
-        border-style: none;
+	#add-tag-btn:hover {
+		background-color: rgb(230, 230, 230);
+	}
+	#add-tag-btn {
+		height: 25px;
+		border-style: none;
 		box-sizing: border-box;
 		border: 1px solid #6d6af7;
 		border-radius: 3px;
-        background-color: white;
-    }
+		background-color: white;
+	}
 	#input-tag {
 		width: 50%;
 		margin: 5px;

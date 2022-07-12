@@ -1,5 +1,7 @@
 module.exports = {
-	transformIgnorePatterns: ["/node_modules/(?!(uuid/dist/esm-browser|svelty-picker|firebase|@firebase|jsdom)/)"],
+	transformIgnorePatterns: [
+		'/node_modules/(?!(uuid/dist/esm-browser|svelty-picker|firebase|@firebase|jsdom)/)'
+	],
 	transform: {
 		'^.+\\.svelte$': [
 			'svelte-jester',
@@ -21,6 +23,6 @@ module.exports = {
 	setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
 	collectCoverageFrom: ['src/**/*.{ts,tsx,svelte,js,jsx}'],
 	globals: {
-		crypto: require("crypto")
+		crypto: require('crypto')
 	}
 };

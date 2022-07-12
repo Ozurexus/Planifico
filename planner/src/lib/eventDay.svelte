@@ -47,7 +47,6 @@
 	function changeWeek() {
 		dispatch('changeWeek', { firstDay, lastDay });
 	}
-
 </script>
 
 <main>
@@ -109,20 +108,19 @@
 												{eventTag}
 											</div>
 										{/each}
-							
 									</div>
 									<div
-											class="close"
-											on:click={() => {
-												deleteEvent(event.id);
-											}}
-										>
-											<img
-												class="cross"
-												src="https://cdn-icons-png.flaticon.com/128/966/966615.png"
-												alt=""
-											/>
-										</div>
+										class="close"
+										on:click={() => {
+											deleteEvent(event.id);
+										}}
+									>
+										<img
+											class="cross"
+											src="https://cdn-icons-png.flaticon.com/128/966/966615.png"
+											alt=""
+										/>
+									</div>
 								</div>
 							{/each}
 						</div>
@@ -237,7 +235,7 @@
 		background-color: white;
 		display: grid;
 		grid-template-columns: 20% 25% 55%;
-		font-size: 40px;
+		font-size: 35px;
 		padding-bottom: 20px;
 	}
 	.background-passed-day {

@@ -3,9 +3,9 @@
 	import SveltyPicker from 'svelty-picker';
 
 	let date: string = '';
-	let timeStart:string = "";
-	let timeEnd:string = "";
-	
+	let timeStart: string = '';
+	let timeEnd: string = '';
+
 	const dispatch = createEventDispatcher();
 	function sendDate() {
 		console.log('sendDate');
@@ -29,9 +29,4 @@
 	on:input={sendDate}
 />
 <p>End time:</p>
-<SveltyPicker
-	inputClasses="form-control"
-	format="hh:ii"
-	bind:value={timeEnd}
-	on:input={sendDate}
-/>
+<SveltyPicker inputClasses="form-control" format="hh:ii" bind:value={timeEnd} on:input={sendDate} />

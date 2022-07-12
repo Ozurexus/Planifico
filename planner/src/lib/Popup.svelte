@@ -21,7 +21,6 @@
 
 	const dispatch = createEventDispatcher();
 
-	
 	function send() {
 		dispatch('send', { date, calendarEvent });
 		console.log('send');

@@ -1,10 +1,9 @@
-
-@import url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 body {
-    background-image: url("background.png");
-    background-size: cover;
-    margin: 0;
+	background-image: url('background.png');
+	background-size: cover;
+	margin: 0;
 }
 :global(body) {
-    padding: 0;
+	padding: 0;
 }

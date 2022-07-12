@@ -1,23 +1,24 @@
 <script lang="ts">
 	import '../styles/global.css';
-	import ButtonSignOut from "../lib/ButtonSignOut.svelte";
-	import {isAuth} from "../internal/middleware"
+	import ButtonSignOut from '../lib/ButtonSignOut.svelte';
+	import { isAuth } from '../internal/middleware';
 
 	let activeElem: string = 'home';
-	import { onMount } from "svelte";
-	let items: { href: string; name: string; id: number }[] = [{ href: '', name: '  ', id: 0}];
+	import { onMount } from 'svelte';
+	let items: { href: string; name: string; id: number }[] = [{ href: '', name: '  ', id: 0 }];
 	let authorized: boolean = false;
-    onMount(async () => {
-        if (isAuth()){
+	onMount(async () => {
+		if (isAuth()) {
 			authorized = true;
-            items = [{ href: '', name: 'PLANIFICO', id: 0 },
-					{ href: 'calendar', name: 'calendar', id: 2 },
-					{ href: 'todo', name: 'To-do list', id: 1 },]
-			
-        }else{
-			items = [{ href: '', name: 'PLANIFICO', id: 0 }]
+			items = [
+				{ href: '', name: 'PLANIFICO', id: 0 },
+				{ href: 'calendar', name: 'calendar', id: 2 },
+				{ href: 'todo', name: 'To-do list', id: 1 }
+			];
+		} else {
+			items = [{ href: '', name: 'PLANIFICO', id: 0 }];
 		}
-    })
+	});
 </script>
 
 <main>
@@ -33,33 +34,31 @@
 				<!-- Capitalize first letter -->
 			</a>
 		{/each}
-		
+
 		{#if authorized}
 			<div class="signout">
 				<ButtonSignOut>Logout</ButtonSignOut>
 			</div>
 		{/if}
-		
 	</div>
 
 	<slot />
 </main>
 
 <style>
-	@import
-	url("https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800");
+	@import url('https://fonts.googleapis.com/css?family=Oswald:500,600|Lato:700,400,500,600,800');
 
-	.signout{
+	.signout {
 		margin-top: 13px;
 		margin-left: auto;
 		margin-right: 15px;
-    }
+	}
 
 	.topnav {
 		background-color: #6d6af7;
 		overflow: hidden;
 		display: flex;
-		justify-content:left;
+		justify-content: left;
 		font-family: Lato;
 		font-weight: 600;
 		padding-left: 50px;
@@ -75,8 +74,8 @@
 		font-size: 20px;
 		margin-right: 20px;
 	}
-	.topnav a:hover{
-		color:pink;
+	.topnav a:hover {
+		color: pink;
 	}
 
 	/* Change the color of links on hover */
