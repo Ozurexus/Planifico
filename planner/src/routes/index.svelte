@@ -1,13 +1,13 @@
 <script>
+	import { onMount } from 'svelte';
 	import ButtonSignIn from '../lib/ButtonSignIn.svelte';
 	import { isAuth } from '../internal/middleware';
 	import { routes } from '../internal/config';
-	import { onMount } from 'svelte';
 
 	onMount(() => {
-		if (isAuth()) {
-			location.replace(routes.welcomePage);
-		}
+	  if (isAuth()) {
+	    location.replace(routes.welcomePage);
+	  }
 	});
 </script>
 

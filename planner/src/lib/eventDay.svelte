@@ -2,8 +2,10 @@
 	import type { CalendarEvent } from '../internal/event';
 	import { eventDelete } from '../internal/out';
 	import { createEventDispatcher } from 'svelte';
+	
+	let weekCofficient;
 
-	let today: Date = new Date();
+	const today: Date = new Date();
 	today.setHours(0);
 	export let firstDay: Date; // first day of the week that showed
 	export let lastDay: Date; // last day of the week that showed
@@ -15,37 +17,37 @@
 	}[];
 	$: console.log(firstDay.toDateString(), lastDay.toDateString());
 	async function deleteEvent(id: string) {
-		console.log(id);
-		let item1 = localStorage.getItem('currentAccount');
-		const curAccount = JSON.parse(item1!);
-		await eventDelete(curAccount, id).then(() => {
-			eventDays.forEach((elem) => {
-				elem.events = elem.events.filter((element) => element.id !== id);
-			});
-			eventDays = eventDays.filter((elem) => elem.events.length != 0);
-			eventDays = eventDays;
-		});
+	  console.log(id);
+	  let item1 = localStorage.getItem('currentAccount');
+	  const curAccount = JSON.parse(item1!);
+	  await eventDelete(curAccount, id).then(() => {
+	    eventDays.forEach((elem) => {
+	      elem.events = elem.events.filter((element) => element.id !== id);
+	    });
+	    eventDays = eventDays.filter((elem) => elem.events.length != 0);
+	    eventDays = eventDays;
+	  });
 	}
 	function getDateDay(date: Date): string {
-		let dateStr: string[] = date.toDateString().split(' ');
-		return dateStr[2][0] != '0' ? dateStr[2] : dateStr[2].slice(1);
+	  let dateStr: string[] = date.toDateString().split(' ');
+	  return dateStr[2][0] != '0' ? dateStr[2] : dateStr[2].slice(1);
 	}
 	function getDateDayOfWeek(date: Date): string {
-		let dateStr: string[] = date.toDateString().split(' ');
-		return dateStr[0];
+	  let dateStr: string[] = date.toDateString().split(' ');
+	  return dateStr[0];
 	}
 	function getDateMonth(date: Date): string {
-		let dateStr: string[] = date.toDateString().split(' ');
-		return dateStr[1];
+	  let dateStr: string[] = date.toDateString().split(' ');
+	  return dateStr[1];
 	}
 	function getDateYear(date: Date): string {
-		let dateStr: string[] = date.toDateString().split(' ');
-		return dateStr[3];
+	  let dateStr: string[] = date.toDateString().split(' ');
+	  return dateStr[3];
 	}
 
 	const dispatch = createEventDispatcher();
 	function changeWeek() {
-		dispatch('changeWeek', { firstDay, lastDay });
+	  dispatch('changeWeek', { firstDay, lastDay });
 	}
 </script>
 

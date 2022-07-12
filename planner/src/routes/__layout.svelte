@@ -1,23 +1,24 @@
 <script lang="ts">
 	import '../styles/global.css';
+	import { onMount } from 'svelte';
 	import ButtonSignOut from '../lib/ButtonSignOut.svelte';
 	import { isAuth } from '../internal/middleware';
-
+	
 	let activeElem: string = 'home';
-	import { onMount } from 'svelte';
+	
 	let items: { href: string; name: string; id: number }[] = [{ href: '', name: '  ', id: 0 }];
 	let authorized: boolean = false;
 	onMount(async () => {
-		if (isAuth()) {
-			authorized = true;
-			items = [
-				{ href: '', name: 'PLANIFICO', id: 0 },
-				{ href: 'calendar', name: 'calendar', id: 2 },
-				{ href: 'todo', name: 'To-do list', id: 1 }
-			];
-		} else {
-			items = [{ href: '', name: 'PLANIFICO', id: 0 }];
-		}
+	  if (isAuth()) {
+	    authorized = true;
+	    items = [
+	      { href: '', name: 'PLANIFICO', id: 0 },
+	      { href: 'calendar', name: 'calendar', id: 2 },
+	      { href: 'todo', name: 'To-do list', id: 1 },
+	    ];
+	  } else {
+	    items = [{ href: '', name: 'PLANIFICO', id: 0 }];
+	  }
 	});
 </script>
 

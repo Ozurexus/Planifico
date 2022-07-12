@@ -1,6 +1,6 @@
 module.exports = {
 	transformIgnorePatterns: [
-		'/node_modules/(?!(uuid/dist/esm-browser|svelty-picker|firebase|@firebase|jsdom)/)'
+		'/node_modules/(?!(uuid/dist/esm-browser|svelty-picker|firebase|@firebase|jsdom|svelte-preprocess|svelte-jester)/)'
 	],
 	transform: {
 		'^.+\\.svelte$': [

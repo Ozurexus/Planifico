@@ -8,8 +8,8 @@
 
 	const dispatch = createEventDispatcher();
 	function sendDate() {
-		console.log('sendDate');
-		dispatch('sendDate', { date, timeStart, timeEnd });
+	  console.log('sendDate');
+	  dispatch('sendDate', { date, timeStart, timeEnd });
 	}
 </script>
 

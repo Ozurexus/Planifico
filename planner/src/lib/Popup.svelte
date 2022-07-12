@@ -5,29 +5,29 @@
 	import { CalendarEvent } from '../internal/event';
 
 	let date: Date;
-	let calendarEvent: CalendarEvent = new CalendarEvent('', '', '', [], '');
+	const calendarEvent: CalendarEvent = new CalendarEvent('', '', '', [], '');
 
 	function addDateAndTime(event: any) {
-		date = new Date(event.detail.date);
-		calendarEvent.timeStart = event.detail.timeStart;
-		calendarEvent.timeEnd = event.detail.timeEnd;
-		console.log(calendarEvent, date);
-		console.log('date and time added');
+	  date = new Date(event.detail.date);
+	  calendarEvent.timeStart = event.detail.timeStart;
+	  calendarEvent.timeEnd = event.detail.timeEnd;
+	  console.log(calendarEvent, date);
+	  console.log('date and time added');
 	}
 	function changeTags(event: any) {
-		calendarEvent.tags = event.detail.tags;
-		console.log('tags changed');
+	  calendarEvent.tags = event.detail.tags;
+	  console.log('tags changed');
 	}
 
 	const dispatch = createEventDispatcher();
 
 	function send() {
-		dispatch('send', { date, calendarEvent });
-		console.log('send');
+	  dispatch('send', { date, calendarEvent });
+	  console.log('send');
 	}
 	function close() {
-		dispatch('close', {});
-		console.log('close');
+	  dispatch('close', {});
+	  console.log('close');
 	}
 </script>
 

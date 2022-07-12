@@ -1,22 +1,7 @@
-<script lang="ts">
-	let mail: string = '';
-	// это проверка, что юзер зашел!!!
+<script lang="ts"> 
 	import { onMount } from 'svelte';
 	import { isAuth } from '../internal/middleware';
 	import { routes } from '../internal/config';
-
-	onMount(() => {
-		if (!isAuth()) {
-			location.replace(routes.basePage);
-		} else {
-			let user = localStorage.getItem('user');
-			if (user == null) {
-				user = '';
-			}
-			mail = JSON.parse(user).userPrincipalName;
-			Fetcher();
-		}
-	});
 	import TodoItem from '../lib/TodoItem.svelte';
 	import { db } from '../internal/Firebase';
 	import {
@@ -29,6 +14,24 @@
 		where,
 		query
 	} from 'firebase/firestore';
+	let filteredToDoList;
+	let ToDoListRemaining;
+	
+	let mail: string = '';
+	
+	onMount(() => {
+		if (!isAuth()) {
+			location.replace(routes.basePage);
+		} else {
+			let user = localStorage.getItem('user');
+			if (user == null) {
+				user = '';
+			}
+			mail = JSON.parse(user).userPrincipalName;
+			Fetcher();
+		}
+	});
+	
 	let newTodoTitle: string = '';
 	let CurrentSort: string = 'all';
 	type todo = {
@@ -41,93 +44,92 @@
 	let ToDoList: todo[] = [];
 
 	async function Fetcher() {
-		const q = query(collection(db, 'ToDo'), where('mail', '==', mail));
-		const querySnapshot = await getDocs(q);
-		querySnapshot.forEach((DOC) => {
-			const data = DOC.data();
-			const todo = {
-				id: data.id,
-				mail: mail,
-				completed: data.completed,
-				title: data.title,
-				BDID: DOC.id
-			};
-			Show(todo);
-		});
+	  const q = query(collection(db, 'ToDo'), where('mail', '==', mail));
+	  const querySnapshot = await getDocs(q);
+	  querySnapshot.forEach((DOC) => {
+	    const data = DOC.data();
+	    const todo = {
+	      id: data.id,
+	      mail,
+	      completed: data.completed,
+	      title: data.title,
+	      BDID: DOC.id,
+	    };
+	    Show(todo);
+	  });
 	}
 	async function Show(DOC: todo) {
-		ToDoList = [
-			...ToDoList,
-			{
-				id: DOC.id,
-				mail: mail,
-				completed: DOC.completed,
-				title: DOC.title,
-				BDID: DOC.BDID
-			}
-		];
+	  ToDoList = [
+	    ...ToDoList,
+	    {
+	      id: DOC.id,
+	      mail,
+	      completed: DOC.completed,
+	      title: DOC.title,
+	      BDID: DOC.BDID,
+	    },
+	  ];
 	}
 
 	async function addTodo(event: KeyboardEvent) {
-		if (newTodoTitle === ' ') {
-			newTodoTitle = '';
-		}
-		if (event.key === 'Enter' && newTodoTitle != '' && newTodoTitle.length > 1) {
-			let date: string = String(Date.now());
-			let todo = {
-				id: date,
-				mail: mail,
-				completed: false,
-				title: newTodoTitle,
-				BDID: ''
-			};
-			if (mail != '') {
-				await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
-					todo.BDID = docref.id;
-					Show(todo);
-				});
-			}
-			newTodoTitle = '';
-		}
+	  if (newTodoTitle === ' ') {
+	    newTodoTitle = '';
+	  }
+	  if (event.key === 'Enter' && newTodoTitle != '' && newTodoTitle.length > 1) {
+	    let date: string = String(Date.now());
+	    let todo = {
+	      id: date,
+	      mail,
+	      completed: false,
+	      title: newTodoTitle,
+	      BDID: '',
+	    };
+	    if (mail != '') {
+	      await addDoc(collection(db, 'ToDo'), todo).then((docref) => {
+	        todo.BDID = docref.id;
+	        Show(todo);
+	      });
+	    }
+	    newTodoTitle = '';
+	  }
 	}
 	$: ToDoListRemaining = filteredToDoList.filter((todo) => !todo.completed).length;
-	$: filteredToDoList =
-		CurrentSort === 'all'
-			? ToDoList
-			: CurrentSort === 'completed'
-			? ToDoList.filter((todo) => todo.completed)
-			: ToDoList.filter((todo) => !todo.completed);
+	$: filteredToDoList =	CurrentSort === 'all'
+		  ? ToDoList
+		  : CurrentSort === 'completed'
+		    ? ToDoList.filter((todo) => todo.completed)
+		    : ToDoList.filter((todo) => !todo.completed);
 	function checkAllToDoList(event: any) {
-		ToDoList.forEach((todo) => setCompleteness(todo, event.srcElement.checked));
-		ToDoList = ToDoList;
+	  ToDoList.forEach((todo) => setCompleteness(todo, event.srcElement.checked));
+	  ToDoList = ToDoList;
 	}
 	async function handleDeleteTodo(event: CustomEvent) {
-		await deleteDoc(doc(db, 'ToDo', event.detail.BDID));
-		ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
+	  await deleteDoc(doc(db, 'ToDo', event.detail.BDID));
+	  ToDoList = ToDoList.filter((todo) => todo.id !== event.detail.id);
 	}
 	function updateFilter(newFilter: string) {
-		CurrentSort = newFilter;
+	  CurrentSort = newFilter;
 	}
 	function clearCompleted() {
-		const Deleter = ToDoList.filter((todo) => todo.completed);
-		ToDoList = ToDoList.filter((todo) => !todo.completed);
-		Deleter.forEach((todo) => deleteDoc(doc(db, 'ToDo', todo.BDID)));
+	  const Deleter = ToDoList.filter((todo) => todo.completed);
+	  ToDoList = ToDoList.filter((todo) => !todo.completed);
+	  Deleter.forEach((todo) => deleteDoc(doc(db, 'ToDo', todo.BDID)));
 	}
 	async function handleToggleComplete(event: any) {
-		await updateDoc(doc(db, 'ToDo', event.detail.BDID), {
-			completed: !event.detail.completed
-		});
-		const todoIndex = ToDoList.findIndex((todo) => todo.id === event.detail.id);
-		const updatedTodo = { ...ToDoList[todoIndex], completed: !ToDoList[todoIndex].completed };
-		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
+	  await updateDoc(doc(db, 'ToDo', event.detail.BDID), {
+	    completed: !event.detail.completed,
+	  });
+	  const todoIndex = ToDoList.findIndex((todo) => todo.id === event.detail.id);
+	  const updatedTodo = { ...ToDoList[todoIndex], completed: !ToDoList[todoIndex].completed };
+	  ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
 	}
 	async function setCompleteness(tododo: todo, state: boolean) {
-		await updateDoc(doc(db, 'ToDo', tododo.BDID), {
-			completed: state
-		});
-		const todoIndex = ToDoList.findIndex((todo) => todo.id === tododo.id);
-		const updatedTodo = { ...ToDoList[todoIndex], completed: state };
-		ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
+	  await updateDoc(doc(db, 'ToDo', tododo.BDID), {
+	    completed: state,
+	  });
+	  const todoIndex = ToDoList.findIndex((todo) => todo.id === tododo.id);
+	  const updatedTodo = { ...ToDoList[todoIndex], completed: state };
+	  ToDoList = [...ToDoList.slice(0, todoIndex), updatedTodo, ...ToDoList.slice(todoIndex + 1)];
 	}
 </script>
 

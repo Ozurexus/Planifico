@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { scale } from 'svelte/transition';
+	
 	export let id: string;
 	export let title: string;
 	export let completed: boolean;
@@ -8,18 +9,18 @@
 	export let mail: string;
 	const dispatcher = createEventDispatcher();
 	function toggleComplete() {
-		dispatcher('toggleComplete', {
-			id: id,
-			BDID: BDID,
-			completed: completed
-		});
+	  dispatcher('toggleComplete', {
+	    id,
+	    BDID,
+	    completed,
+	  });
 	}
 	function deleteTodo() {
-		dispatcher('deleteTodo', {
-			id: id,
-			BDID: BDID,
-			completed: completed
-		});
+	  dispatcher('deleteTodo', {
+	    id,
+	    BDID,
+	    completed,
+	  });
 	}
 </script>
 

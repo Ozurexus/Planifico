@@ -1,23 +1,23 @@
 <script lang="ts">
 	import type { Client } from '@microsoft/microsoft-graph-client';
+	import { onMount } from 'svelte';
 	import ButtonSignOut from '../lib/ButtonSignOut.svelte';
 	import { isAuth } from '../internal/middleware';
 	import { getCurrentCalendar, newEventCalendar } from '../internal/out';
 	import { CalendarEvent } from '../internal/event';
-	import { onMount } from 'svelte';
 	import { routes } from '../internal/config';
 
 	onMount(() => {
-		if (!isAuth()) {
-			location.replace(routes.basePage);
-		}
+	  if (!isAuth()) {
+	    location.replace(routes.basePage);
+	  }
 	});
 
 	async function getCalendar() {
-		let item1 = localStorage.getItem('currentAccount');
-		const curAccount = JSON.parse(item1!);
+	  const item1 = localStorage.getItem('currentAccount');
+	  const curAccount = JSON.parse(item1!);
 
-		const events = await getCurrentCalendar(curAccount);
+	  const events = await getCurrentCalendar(curAccount);
 	}
 </script>
 

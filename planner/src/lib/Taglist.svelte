@@ -5,18 +5,18 @@
 	let shown: boolean = false;
 	let tagName: string = '';
 
-	let dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 	function addTag(event: KeyboardEvent) {
-		if (event.key === 'Enter' && tagName != '') {
-			tags = [...tags, tagName];
-			tagName = '';
-		}
-		dispatch('change', { tags });
+	  if (event.key === 'Enter' && tagName != '') {
+	    tags = [...tags, tagName];
+	    tagName = '';
+	  }
+	  dispatch('change', { tags });
 	}
 	function removeTag(id: number) {
-		tags.splice(id, 1);
-		tags = tags;
-		dispatch('change', { tags });
+	  tags.splice(id, 1);
+	  tags = tags;
+	  dispatch('change', { tags });
 	}
 </script>
 
