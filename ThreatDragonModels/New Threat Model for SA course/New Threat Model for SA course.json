@@ -1,0 +1,16 @@
+{
+  "version": "2.0.10",
+  "summary": {
+    "title": "New Threat Model for SA course",
+    "owner": "Maxim Piniagin",
+    "description": "",
+    "id": 0
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [],
+    "diagramTop": 0,
+    "reviewer": "Maxim Piniagin",
+    "threatTop": 0
+  }
+}
